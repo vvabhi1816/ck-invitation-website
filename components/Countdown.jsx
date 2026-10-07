@@ -14,10 +14,6 @@ import { OrnamentalDivider, LotusMark } from "./Decorations";
 // is identical in every visitor's timezone. We compare against Date.now() (UTC
 // milliseconds), which is also timezone-independent.
 //
-// States:
-//   • before start ....... show Days / Hours / Minutes / Seconds (never negative)
-//   • between start/end ... "The Celebration Has Begun!"
-//   • after end .......... completed-event message
 // =============================================================================
 
 // Pure helper — returns the remaining time + which phase we're in.
