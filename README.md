@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Kiruthika & Chandraprakash — Wedding Reception Invitation
 
 A premium, responsive wedding **reception** invitation website combining traditional South Indian
@@ -123,3 +124,7 @@ Nothing else needs to change.
    (`@netlify/plugin-nextjs`) if prompted. No environment variables required.
 
 > No backend, database, or API keys are needed — this is a static-first invitation site.
+=======
+# ck-invitation-website
+A premium South Indian wedding reception invitation website for Kiruthika &amp; Chandraprakash.
+>>>>>>> 331007efa3fbc10aa21d928b208dc1fdf3e5667f
