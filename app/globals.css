@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   COLOR PALETTE — edit here to re-theme the whole site.
+   ========================================================================= */
+:root {
+  --ivory: #f8f1de;
+  --ivory-deep: #f1e6c8;
+  --green: #315d20;
+  --maroon: #8b2635;
+  --gold: #c99a3d;
+  --gold-soft: #e3c98a;
+  --lotus: #c83b62;
+  --brown: #4a3028;
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+html {
+  scroll-behavior: smooth;
+  /* Offset smooth-scroll targets so the fixed nav doesn't cover headings */
+  scroll-padding-top: 80px;
+}
+
+body {
+  color: var(--brown);
+  background-color: var(--ivory);
+  /* Subtle paper-like texture layered over the ivory background */
+  background-image: radial-gradient(
+      circle at 20% 15%,
+      rgba(201, 154, 61, 0.05) 0%,
+      transparent 45%
+    ),
+    radial-gradient(circle at 85% 80%, rgba(49, 93, 32, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(139, 38, 53, 0.02) 0%, transparent 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden; /* guard against accidental horizontal scroll */
+}
+
+/* =========================================================================
+   REUSABLE DECORATIVE / TYPOGRAPHIC HELPERS
+   ========================================================================= */
+
+/* Gold gradient text used for names and key headings */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #a9792a 0%, #c99a3d 40%, #e3c98a 55%, #c99a3d 70%, #a9792a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--gold);
+}
+
+/* A fine ornamental frame used on cards and screens */
+.gold-frame {
+  position: relative;
+  border: 1px solid rgba(201, 154, 61, 0.55);
+  box-shadow: inset 0 0 0 4px rgba(201, 154, 61, 0.12);
+}
+
+/* Section label styling (small caps gold label above headings) */
+.eyebrow {
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+/* Thin decorative horizontal rule */
+.hair-rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(201, 154, 61, 0.6),
+    transparent
+  );
+}
+
+/* =========================================================================
+   TAMIL MODE
+   When the menu toggle selects தமிழ், <html data-lang="ta"> is set and the
+   Latin display/body fonts fall back to the Tamil serif so Tamil text renders
+   correctly everywhere. The wide eyebrow letter-spacing is relaxed for Tamil.
+   ========================================================================= */
+html[data-lang="ta"] .font-heading,
+html[data-lang="ta"] .font-body,
+html[data-lang="ta"] .eyebrow {
+  font-family: var(--font-noto-tamil), "Noto Serif Tamil", serif;
+}
+html[data-lang="ta"] .eyebrow {
+  letter-spacing: 0.08em;
+}
+/* Tight display tracking looks cramped in Tamil — loosen it slightly. */
+html[data-lang="ta"] .tracking-wide {
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================================
+   ACCESSIBILITY
+   ========================================================================= */
+
+/* Visible focus states for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Respect reduced-motion: disable non-essential animation & smooth scroll.
+   Content is authored to be visible WITHOUT animation, so nothing is hidden. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Nicer, theme-matched scrollbar on supporting browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ivory-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 154, 61, 0.6);
+  border-radius: 10px;
+}
