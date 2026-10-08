@@ -20,7 +20,7 @@ export const content = {
   // ===========================================================================
   en: {
     bride: {
-      shortName: "Kiruthika",
+      shortName: "Kiruthika Shri",
       fullName: "V. Kiruthika Shri",
       qualification: "B.Sc., MSW.",
       parents: "D/o V. Vellingiri & V. Kavitha",
@@ -137,7 +137,7 @@ export const content = {
   // ===========================================================================
   ta: {
     bride: {
-      shortName: "கிருத்திகா",
+      shortName: "கிருத்திகா ஸ்ரீ",
       fullName: "வி. கிருத்திகா ஸ்ரீ",
       qualification: "B.Sc., MSW.",
       parents: "திரு. வி. வெள்ளிங்கிரி & திருமதி. வி. கவிதா அவர்களின் மகள்",

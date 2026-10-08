@@ -135,3 +135,71 @@ html[data-lang="ta"] .tracking-wide {
   background: rgba(201, 154, 61, 0.6);
   border-radius: 10px;
 }
+
+/* =========================================================================
+   RESPONSIVE SAFETY
+   Prevent accidental width overflow on very small screens.
+   ========================================================================= */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================================
+   OPENING SCREEN — TAMIL COUPLE NAMES
+   Keep Tamil names on ONE line and scale them down on smaller screens.
+   ========================================================================= */
+
+.opening-couple-name {
+  white-space: nowrap;
+  max-width: 100%;
+  line-height: 0.95;
+}
+
+/* Tamil needs slightly smaller display sizing because Tamil glyphs
+   occupy more horizontal space than the Latin names. */
+html[data-lang="ta"] .opening-couple-name {
+  font-size: clamp(1.65rem, 5.5vw, 4.75rem);
+  letter-spacing: 0;
+  word-break: keep-all;
+  overflow: visible;
+}
+
+/* Extra protection for very small phones */
+@media (max-width: 380px) {
+  html[data-lang="ta"] .opening-couple-name {
+    font-size: clamp(1.55rem, 5.8vw, 2.4rem);
+  }
+}
+
+/* Tamil landing-page names:
+   Use solid gold instead of the gradient so every Tamil glyph
+   remains completely filled and clearly visible. */
+html[data-lang="ta"] .opening-couple-name {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: var(--gold);
+  color: var(--gold);
+
+  font-family: var(--font-noto-tamil), "Noto Serif Tamil", serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  word-break: keep-all;
+}

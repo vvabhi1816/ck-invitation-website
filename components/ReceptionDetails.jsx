@@ -36,8 +36,25 @@ export default function ReceptionDetails() {
   const mapsSearchUrl = wedding.venue.mapsSearchUrl;
 
   return (
-    <section id="reception" className="relative w-full px-5 py-20 sm:px-8 sm:py-24">
-      <div className="mx-auto max-w-5xl">
+    <section
+      id="reception"
+      className="relative w-full overflow-hidden px-5 py-20 sm:px-8 sm:py-24"
+    >
+      {/* Reception decorative background */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+        style={{
+          backgroundImage: "url('/images/decorations/reception-pattern.webp')",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Soft overlay for text readability */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-ivory/30"
+        aria-hidden="true"
+      />
+      <div className="relative z-10 mx-auto max-w-5xl">
         {/* Heading */}
         <div className="text-center">
           <LotusMark size={48} className="mb-4" />

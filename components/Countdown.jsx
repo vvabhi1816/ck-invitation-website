@@ -73,8 +73,25 @@ export default function Countdown() {
   }, [startMs, endMs]);
 
   return (
-    <section id="countdown" className="relative w-full px-5 py-20 sm:px-8 sm:py-24">
-      <div className="mx-auto max-w-3xl text-center">
+    <section
+      id="countdown"
+      className="relative w-full overflow-hidden px-5 py-20 sm:px-8 sm:py-24"
+    >
+      {/* Countdown decorative background */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-75"
+        style={{
+          backgroundImage: "url('/images/decorations/countdown-pattern.webp')",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Soft overlay for text readability */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-ivory/35"
+        aria-hidden="true"
+      />
+      <div className="relative z-10 mx-auto max-w-3xl text-center">
         <LotusMark size={48} className="mb-4" />
         <p className="eyebrow text-xs text-gold">{ui.saveTheDate}</p>
         <h2 className="mt-2 font-heading text-4xl font-semibold text-maroon sm:text-5xl">

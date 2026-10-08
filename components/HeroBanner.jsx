@@ -52,15 +52,19 @@ export default function HeroBanner() {
 
         <OrnamentalDivider className="my-6" />
 
-        <h1 className="font-heading leading-none">
-          <span className="block text-gold-gradient text-5xl font-semibold tracking-wide sm:text-6xl md:text-7xl">
-            {bride.shortName}
-          </span>
-          <span className="my-2 block font-heading text-2xl text-lotus sm:text-3xl">&amp;</span>
-          <span className="block text-gold-gradient text-5xl font-semibold tracking-wide sm:text-6xl md:text-7xl">
-            {groom.shortName}
-          </span>
-        </h1>
+        <h1 className="mx-auto w-full max-w-[560px] font-heading leading-[0.95]">
+        <span className="block max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal">
+          {bride.shortName}
+        </span>
+
+        <span className="my-2 block font-heading text-xl text-lotus sm:my-3 sm:text-3xl">
+          &amp;
+        </span>
+
+        <span className="block max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal">
+          {groom.shortName}
+        </span>
+      </h1>
 
         <p className="mt-6 font-heading text-xl tracking-[0.3em] text-brown sm:text-2xl">
           {event.dateCompact}

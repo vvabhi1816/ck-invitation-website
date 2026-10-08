@@ -37,7 +37,7 @@ export default function OpeningScreen({ onOpen }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-ivory px-5 py-10"
+      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-ivory px-3 py-3 sm:px-5 sm:py-5 md:px-6 md:py-7"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
@@ -90,7 +90,7 @@ export default function OpeningScreen({ onOpen }) {
         variants={container}
         initial="hidden"
         animate="show"
-        className="gold-frame relative z-10 mx-auto w-full max-w-2xl overflow-hidden rounded-2xl bg-ivory/85 px-6 py-12 text-center shadow-lg backdrop-blur-md sm:px-12 sm:py-16"
+        className="gold-frame relative z-10 mx-auto w-full max-w-2xl overflow-hidden rounded-2xl bg-ivory/85 px-4 py-7 text-center shadow-lg backdrop-blur-md sm:px-8 sm:py-10 md:px-12 md:py-12"
       >
         <MandalaCorner position="top-left" />
         <MandalaCorner position="top-right" />
@@ -111,14 +111,14 @@ export default function OpeningScreen({ onOpen }) {
 
         <motion.p
           variants={fadeUp}
-          className="font-heading text-xl leading-relaxed text-maroon sm:text-2xl"
+          className="font-heading text-lg leading-relaxed text-maroon sm:text-xl md:text-2xl"
         >
           {ui.receptionInviteHeading}
         </motion.p>
 
         <motion.p
           variants={fadeUp}
-          className="eyebrow mt-3 text-[11px] text-green/80 sm:text-xs"
+          className="eyebrow mt-2 text-[10px] leading-relaxed text-green/80 sm:mt-3 sm:text-xs"
         >
           {ui.celebrationTagline}
         </motion.p>
@@ -128,26 +128,34 @@ export default function OpeningScreen({ onOpen }) {
         </motion.div>
 
         {/* Couple names */}
-        <motion.h1 variants={fadeUp} className="font-heading leading-none">
-          <span className="block text-gold-gradient text-5xl font-semibold tracking-wide sm:text-6xl md:text-7xl">
-            {bride.shortName}
-          </span>
-          <motion.span
-            className="my-2 block font-heading text-2xl text-lotus sm:text-3xl"
-            animate={{ scale: [1, 1.18, 1], opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          <motion.h1
+            variants={fadeUp}
+            className="mx-auto w-full max-w-[560px] font-heading leading-[0.95]"
           >
-            &amp;
-          </motion.span>
-          <span className="block text-gold-gradient text-5xl font-semibold tracking-wide sm:text-6xl md:text-7xl">
-            {groom.shortName}
-          </span>
-        </motion.h1>
+            {/* Bride name */}
+            <span className="opening-couple-name block whitespace-nowrap text-gold-gradient text-[clamp(1.7rem,5.5vw,4.75rem)] font-semibold tracking-normal">
+              {bride.shortName}
+            </span>
+
+            {/* Weds separator */}
+            <motion.span
+              className="my-2 block font-heading text-xl text-lotus sm:my-3 sm:text-3xl"
+              animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              &amp;
+            </motion.span>
+
+            {/* Groom name */}
+            <span className="opening-couple-name block whitespace-nowrap text-gold-gradient text-[clamp(1.7rem,5.5vw,4.75rem)] font-semibold tracking-normal">
+              {groom.shortName}
+            </span>
+          </motion.h1>
 
         {/* Date */}
         <motion.p
           variants={fadeUp}
-          className="mt-7 font-heading text-xl tracking-[0.3em] text-brown sm:text-2xl"
+          className="mt-6 font-heading text-base tracking-[0.18em] text-brown sm:mt-7 sm:text-xl sm:tracking-[0.25em] md:text-2xl md:tracking-[0.3em]"
         >
           {event.dateCompact}
         </motion.p>
@@ -159,7 +167,7 @@ export default function OpeningScreen({ onOpen }) {
           onClick={onOpen}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
-          className="group mt-10 inline-flex items-center gap-2 rounded-full border border-gold bg-green px-8 py-3 font-heading text-base font-medium tracking-wider text-ivory shadow-md transition-colors hover:bg-maroon focus-visible:outline-none sm:text-lg"
+          className="group mt-7 inline-flex items-center gap-2 rounded-full border border-gold bg-green px-6 py-2.5 font-heading text-sm font-medium tracking-wide text-ivory shadow-md transition-colors hover:bg-maroon focus-visible:outline-none sm:mt-9 sm:px-8 sm:py-3 sm:text-lg"
         >
           {ui.openInvitation}
           <motion.span
