@@ -23,7 +23,8 @@ const LINKS = [
   { key: "couple", href: "#couple" },
   { key: "countdown", href: "#countdown" },
   { key: "reception", href: "#reception" },
-  { key: "venue", href: "#venue" },
+  // Venue ("Find Us Here") section hidden — re-enable with the <VenueSection /> in page.js.
+  // { key: "venue", href: "#venue" },
   { key: "gallery", href: "#gallery" },
 ];
 

@@ -17,6 +17,10 @@ export const weddingAssets = {
   // Optional photo of the reception hall / mandap (shown in Reception Details).
   receptionHall: "/images/reception-hall.jpg", // CHANGE RECEPTION HALL IMAGE HERE
 
+  // Hero background — vintage sepia South-Indian temple courtyard art. Already
+  // ivory/sepia toned, so it blends into the page's ivory theme. CHANGE HERE.
+  heroBackground: "/images/hero-temple.png",
+
   // Background music (optional, user-controlled — never autoplays).
   // Replace with an appropriately licensed track.
   music: "/music/wedding-melody.mp3",

@@ -19,19 +19,22 @@ export default function HeroBanner() {
       id="home"
       className="relative flex min-h-[88vh] w-full items-center justify-center overflow-hidden px-5 py-24 text-center"
     >
-      {/* CHANGE HERO/COUPLE BACKGROUND IMAGE HERE → config/assets.js (weddingAssets.couple).
-          Layered gradients keep the ivory tone and ensure readable contrast even
-          with a photo behind. If the file is missing, only the gradient shows. */}
+      {/* CHANGE HERO BACKGROUND IMAGE HERE → config/assets.js (weddingAssets.heroBackground).
+          The temple-courtyard art is already ivory/sepia toned, so it sits naturally on
+          the page's ivory theme. If the file is missing, only the ivory wash shows. */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25"
-        style={{ backgroundImage: `url('${weddingAssets.couple}')` }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${weddingAssets.heroBackground}')` }}
         aria-hidden="true"
       />
+      {/* Ivory wash — a soft radial halo keeps the centred text readable, while the
+          top/bottom linear fade melts the hero edges into the surrounding ivory
+          sections for a seamless blend. */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage:
-            "linear-gradient(to bottom, rgba(248,241,222,0.85), rgba(248,241,222,0.75), rgba(248,241,222,0.95))",
+          background:
+            "radial-gradient(ellipse 75% 55% at 50% 48%, rgba(248,241,222,0.70) 0%, rgba(248,241,222,0.12) 70%), linear-gradient(to bottom, rgba(248,241,222,0.92) 0%, rgba(248,241,222,0.32) 26%, rgba(248,241,222,0.38) 66%, rgba(248,241,222,0.97) 100%)",
         }}
         aria-hidden="true"
       />

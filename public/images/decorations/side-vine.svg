@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 240" width="120" height="240" fill="none">
+  <!-- One seamless vine tile (120 x 240). The stem starts and ends at x=60 so
+       stacked tiles join without a seam. Mirrors the original SideBorder pattern. -->
+  <path d="M60 0 C 96 55, 24 72, 60 120 C 96 168, 24 185, 60 240" stroke="#4e7d38" stroke-width="2.4" fill="none" opacity="0.5"/>
+
+  <!-- leaves along the stem -->
+  <path d="M0 0 C -26 -5 -36 -22 -32 -36 C -14 -30 -2 -15 0 0 Z" transform="translate(60 150) rotate(18)" fill="#315D20" opacity="0.5"/>
+  <path d="M0 0 C -26 -5 -36 -22 -32 -36 C -14 -30 -2 -15 0 0 Z" transform="translate(60 70) scale(-1 1) rotate(18)" fill="#3f7129" opacity="0.5"/>
+  <path d="M0 0 C -26 -5 -36 -22 -32 -36 C -14 -30 -2 -15 0 0 Z" transform="translate(60 196) scale(-0.8 0.8) rotate(10)" fill="#4e7d38" opacity="0.45"/>
+
+  <!-- a full lotus bloom at the centre of the tile (BloomFan, scale 0.6) -->
+  <g transform="translate(60 126) scale(0.6)">
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-74)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-50)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-26)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(0)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(26)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(50)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(74)" fill="#A62A4E" opacity="0.8"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-54) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-31) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(-10) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(10) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(31) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="rotate(54) scale(0.82)" fill="#D94E77" opacity="0.96"/>
+    <path d="M0 0 C -9 -22 -6 -40 0 -48 C 6 -40 9 -22 0 0 Z" transform="scale(0.5)" fill="#EC8FA8"/>
+    <ellipse cx="0" cy="-7" rx="5.5" ry="4.5" fill="#C99A3D"/>
+    <circle cx="-3" cy="-8" r="1.3" fill="#8a6a1f"/>
+    <circle cx="3" cy="-8" r="1.3" fill="#8a6a1f"/>
+    <circle cx="0" cy="-5" r="1.3" fill="#8a6a1f"/>
+  </g>
+
+  <!-- small buds near the tile edges keep the repeat continuous -->
+  <g transform="translate(60 20)">
+    <path d="M0 2 C -6 -11 -4 -22 0 -30 C 4 -22 6 -11 0 2 Z" fill="#D94E77" opacity="0.85"/>
+    <path d="M0 2 C -3 -10 -2 -20 0 -27 C 2 -20 3 -10 0 2 Z" fill="#A62A4E" opacity="0.6"/>
+  </g>
+  <g transform="translate(60 226)">
+    <path d="M0 2 C -6 -11 -4 -22 0 -30 C 4 -22 6 -11 0 2 Z" fill="#D94E77" opacity="0.7"/>
+  </g>
+
+  <!-- golden accents -->
+  <circle cx="40" cy="96" r="2.2" fill="#C99A3D" opacity="0.7"/>
+  <circle cx="82" cy="150" r="2.2" fill="#C99A3D" opacity="0.7"/>
+</svg>

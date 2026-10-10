@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useContent } from "./LanguageContext";
-import { OrnamentalDivider, LotusMark, FloralBottom, MandalaCorner } from "./Decorations";
+import { OrnamentalDivider, LotusMark, TempleArchFrame } from "./Decorations";
 
 // =============================================================================
 // Section 2 — Main Invitation
@@ -21,14 +21,12 @@ export default function InvitationSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="gold-frame relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-ivory/85 px-6 pb-36 pt-12 text-center shadow-sm sm:px-12 sm:pt-16"
+        className="gold-frame relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-ivory/85 px-7 pb-16 pt-20 text-center shadow-sm sm:px-14 sm:pb-20 sm:pt-24 md:pt-28 lg:pt-32"
       >
-        {/* Gold mandala corners + lush lotus florals at the bottom */}
-        <MandalaCorner position="top-left" />
-        <MandalaCorner position="top-right" />
-        <FloralBottom width={150} className="opacity-95 sm:[&>svg]:w-[200px]" />
+        {/* Scalable gold temple-arch frame with lotus corners (fits any height) */}
+        <TempleArchFrame />
 
-        {/* All content sits above the florals */}
+        {/* All content sits inside the arch */}
         <div className="relative z-10">
         <LotusMark size={52} className="mb-5" />
 

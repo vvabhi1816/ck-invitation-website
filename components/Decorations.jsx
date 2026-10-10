@@ -180,59 +180,86 @@ export function LotusCorner({ position = "top-left", className = "" }) {
 }
 
 // -----------------------------------------------------------------------------
-// SideBorder — a seamless vertical lotus-and-leaf vine that fills the empty
-// gutter on the LEFT or RIGHT of the page on large screens. Fixed to the
-// viewport edge, repeats up the full height, sits BEHIND the content (-z-10).
-// Mirrored on the right so the two sides frame the page symmetrically. Hidden on
-// small screens where the content already fills the width.
+// TempleArchFrame — a scalable gold ogee (temple) arch that frames a card, with
+// a lotus bloom in each corner. Recreates the "temple arch" invitation art, but
+// as pure SVG so it fits ANY content height (mobile, desktop, long Tamil text)
+// with no cropping or distortion. Place inside a `relative overflow-hidden`
+// container; the arch outline uses non-scaling strokes so the gold line stays a
+// constant weight however the card is stretched.
+// -----------------------------------------------------------------------------
+export function TempleArchFrame({ className = "" }) {
+  // Corner blooms scale down on phones so they never crowd the text. The arch
+  // height (below) and the card's top padding (in InvitationSection) are kept in
+  // step at each breakpoint so the content always clears the curve.
+  const corner = "scale-[0.58] sm:scale-75 md:scale-90 lg:scale-100";
+  return (
+    <div className={`pointer-events-none absolute inset-0 ${className}`} aria-hidden="true">
+      {/* Top ogee arch — a BOUNDED height so the content below always clears the
+          curve, at every screen size and in both languages. */}
+      <svg
+        className="absolute inset-x-0 top-0 h-16 w-full sm:h-20 md:h-24 lg:h-28"
+        viewBox="0 0 100 52"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <path
+          d="M4 52 L4 24 C 6 12 20 13 30 13 C 40 13 47 6 50 2 C 53 6 60 13 70 13 C 80 13 94 12 96 24 L96 52"
+          stroke="#C99A3D"
+          strokeWidth="1.6"
+          vectorEffect="non-scaling-stroke"
+          opacity="0.65"
+        />
+        <path
+          d="M7 52 L7 26 C 9 16 21 17 30 17 C 39 17 46 10 50 6 C 54 10 61 17 70 17 C 79 17 91 16 93 26 L93 52"
+          stroke="#C99A3D"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+          opacity="0.4"
+        />
+        {/* finial at the peak */}
+        <path d="M50 0 C 51.4 2.5 51.4 4.5 50 6.5 C 48.6 4.5 48.6 2.5 50 0 Z" fill="#C99A3D" opacity="0.8" />
+        <circle cx="50" cy="8" r="1" fill="#C83B62" opacity="0.85" />
+      </svg>
+
+      {/* Side + bottom rails. Plain bordered DIVS (not an SVG) so they stretch to
+          the REAL content height and close the frame at the bottom. An absolutely
+          positioned <svg> with top/bottom offsets sizes itself to its viewBox
+          aspect ratio instead of filling, which made the rails stop short of the
+          venue details. Divs honour top + bottom, so the arch always grows with
+          the content — in English and Tamil, at every width. */}
+      <div className="absolute inset-x-[4%] bottom-0 top-16 rounded-b-xl border-x-[1.6px] border-b-[1.6px] border-gold/60 sm:top-20 md:top-24 lg:top-28" />
+      <div className="absolute inset-x-[7%] bottom-[5px] top-16 rounded-b-lg border-x border-b border-gold/35 sm:top-20 md:top-24 lg:top-28" />
+
+      {/* lotus blooms in all four corners, echoing the arch art */}
+      <LotusCorner position="top-left" className={`origin-top-left ${corner}`} />
+      <LotusCorner position="top-right" className={`origin-top-right ${corner}`} />
+      <LotusCorner position="bottom-left" className={`origin-bottom-left ${corner}`} />
+      <LotusCorner position="bottom-right" className={`origin-bottom-right ${corner}`} />
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// SideBorder — a seamless vertical lotus-and-leaf vine along the LEFT or RIGHT
+// viewport edge. The vine lives in /images/decorations/side-vine.svg and is used
+// as a background that SCALES to the element's width (background-size: 100% auto)
+// and repeats down the full height — so it stays complete and crisp at ANY width.
+// Visible on every screen size (narrow on phones, wider on desktop); sits behind
+// the content (-z-10) so it never overlaps text or controls, and never causes
+// horizontal scroll. Mirrored on the right so the two sides frame the page.
 // -----------------------------------------------------------------------------
 export function SideBorder({ side = "left", className = "" }) {
-  const id = `vine-${side}`; // unique per side so the two <pattern>s don't clash
-  const leaf = "M0 0 C -26 -5 -36 -22 -32 -36 C -14 -30 -2 -15 0 0 Z";
   return (
     <div
-      className={`pointer-events-none fixed inset-y-0 -z-10 hidden w-[110px] overflow-hidden opacity-70 lg:block xl:w-[150px] ${
-        side === "left" ? "left-0" : "right-0"
+      className={`pointer-events-none fixed inset-y-0 -z-10 bg-repeat-y opacity-50 sm:opacity-60 lg:opacity-70 w-[34px] sm:w-[60px] md:w-[88px] lg:w-[120px] xl:w-[150px] ${
+        side === "left" ? "left-0" : "right-0 -scale-x-100"
       } ${className}`}
+      style={{
+        backgroundImage: "url('/images/decorations/side-vine.svg')",
+        backgroundSize: "100% auto",
+      }}
       aria-hidden="true"
-    >
-      <svg width="100%" height="100%" className={side === "right" ? "-scale-x-100" : ""}>
-        <defs>
-          {/* One tile = 120 wide × 240 tall, repeated up the whole column. The
-              stem starts and ends at x=60 so successive tiles join seamlessly. */}
-          <pattern id={id} x="0" y="0" width="120" height="240" patternUnits="userSpaceOnUse">
-            <path
-              d="M60 0 C 96 55, 24 72, 60 120 C 96 168, 24 185, 60 240"
-              stroke="#4e7d38"
-              strokeWidth="2.4"
-              fill="none"
-              opacity="0.5"
-            />
-            {/* leaves along the stem */}
-            <path d={leaf} transform="translate(60 150) rotate(18)" fill="#315D20" opacity="0.5" />
-            <path d={leaf} transform="translate(60 70) scale(-1 1) rotate(18)" fill="#3f7129" opacity="0.5" />
-            <path d={leaf} transform="translate(60 196) scale(-0.8 0.8) rotate(10)" fill="#4e7d38" opacity="0.45" />
-
-            {/* a full lotus bloom at the centre of the tile */}
-            <BloomFan cx={60} cy={126} scale={0.6} tilt={0} />
-
-            {/* small buds near the tile edges keep the repeat looking continuous */}
-            <g transform="translate(60 20)">
-              <path d="M0 2 C -6 -11 -4 -22 0 -30 C 4 -22 6 -11 0 2 Z" fill="#D94E77" opacity="0.85" />
-              <path d="M0 2 C -3 -10 -2 -20 0 -27 C 2 -20 3 -10 0 2 Z" fill="#A62A4E" opacity="0.6" />
-            </g>
-            <g transform="translate(60 226)">
-              <path d="M0 2 C -6 -11 -4 -22 0 -30 C 4 -22 6 -11 0 2 Z" fill="#D94E77" opacity="0.7" />
-            </g>
-
-            {/* a couple of golden accents */}
-            <circle cx="40" cy="96" r="2.2" fill="#C99A3D" opacity="0.7" />
-            <circle cx="82" cy="150" r="2.2" fill="#C99A3D" opacity="0.7" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill={`url(#${id})`} />
-      </svg>
-    </div>
+    />
   );
 }
 

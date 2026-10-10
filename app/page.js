@@ -12,7 +12,7 @@ import InvitationSection from "@/components/InvitationSection";
 import CoupleSection from "@/components/CoupleSection";
 import Countdown from "@/components/Countdown";
 import ReceptionDetails from "@/components/ReceptionDetails";
-import VenueSection from "@/components/VenueSection";
+// import VenueSection from "@/components/VenueSection"; // Venue section hidden for now
 import PhotoGallery from "@/components/PhotoGallery";
 import FamilyBlessings from "@/components/FamilyBlessings";
 import ClosingSection from "@/components/ClosingSection";
@@ -71,7 +71,10 @@ export default function Home() {
           <CoupleSection />
           <Countdown />
           <ReceptionDetails />
-          <VenueSection />
+          {/* Venue ("Find Us Here") section hidden for now — the Reception
+              section still has a working "Get Directions" link. Re-enable by
+              uncommenting this and the "venue" nav link in Navigation.jsx. */}
+          {/* <VenueSection /> */}
           <PhotoGallery />
           <FamilyBlessings />
           <ClosingSection />
