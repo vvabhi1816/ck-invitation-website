@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { weddingAssets } from "@/config/assets";
 import { useContent } from "./LanguageContext";
 import SafeImage from "./SafeImage";
-import { OrnamentalDivider, LotusMark, FloralBottom } from "./Decorations";
+import { OrnamentalDivider, LotusMark } from "./Decorations";
 
 // =============================================================================
 // Section 3 — Couple Showcase
@@ -55,8 +55,6 @@ export default function CoupleSection() {
 
   return (
     <section id="couple" className="relative w-full overflow-hidden px-5 py-20 sm:px-8 sm:py-24">
-      {/* soft lotus florals peeking along the bottom edge */}
-      <FloralBottom width={150} className="opacity-60 sm:[&>svg]:w-[210px]" />
       <div className="relative z-10 mx-auto max-w-5xl">
         {/* Heading */}
         <div className="text-center">
