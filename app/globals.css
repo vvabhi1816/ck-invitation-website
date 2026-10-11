@@ -62,6 +62,33 @@ body {
   box-shadow: inset 0 0 0 4px rgba(201, 154, 61, 0.12);
 }
 
+/* ---------------------------------------------------------------------------
+   Inner-content horizontal padding.
+   Keeps a section's centred content (and any full-width child like the venue
+   image frame or the invitation card) INSIDE the two vertical lotus borders,
+   with an even ~8px gap on both sides. The padding at each breakpoint equals the
+   SideBorder vine width (34/60/88/120/150px, see Decorations.jsx) + 8px gap, so
+   content is physically constrained between the borders rather than sliding
+   under them. box-sizing is border-box site-wide (Tailwind preflight), so these
+   paddings never cause horizontal overflow.
+   --------------------------------------------------------------------------- */
+.px-inner {
+  padding-left: 42px;
+  padding-right: 42px;
+}
+@media (min-width: 640px) {
+  .px-inner { padding-left: 68px; padding-right: 68px; }
+}
+@media (min-width: 768px) {
+  .px-inner { padding-left: 96px; padding-right: 96px; }
+}
+@media (min-width: 1024px) {
+  .px-inner { padding-left: 128px; padding-right: 128px; }
+}
+@media (min-width: 1280px) {
+  .px-inner { padding-left: 158px; padding-right: 158px; }
+}
+
 /* Section label styling (small caps gold label above headings) */
 .eyebrow {
   letter-spacing: 0.35em;
@@ -96,6 +123,23 @@ html[data-lang="ta"] .eyebrow {
 /* Tight display tracking looks cramped in Tamil — loosen it slightly. */
 html[data-lang="ta"] .tracking-wide {
   letter-spacing: 0.01em;
+}
+
+/* Countdown heading — the Tamil heading ("எங்கள் கொண்டாட்டத்திற்கான நாள்
+   எண்ணிக்கை") is far longer/wider than the English one, so Tamil gets its OWN
+   smaller, fully-fluid size that wraps naturally onto multiple lines and never
+   crosses the lotus side borders at 320px. English keeps its Tailwind
+   text-4xl / sm:text-5xl sizing (untouched).
+     • min 1.1rem — the longest Tamil word fits the ~236px inner width at 320px,
+     • 5vw        — scales smoothly up through tablets,
+     • max 2.5rem — a tasteful cap on desktop.
+   line-height 1.4 leaves room for Tamil vowel/combining marks (no clipping);
+   overflow-wrap is a safety net so nothing can ever spill past the border. */
+html[data-lang="ta"] .countdown-title {
+  font-size: clamp(1.1rem, 5vw, 2.5rem);
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* =========================================================================
@@ -162,35 +206,30 @@ a {
 
 /* =========================================================================
    OPENING SCREEN — TAMIL COUPLE NAMES
-   Keep Tamil names on ONE line and scale them down on smaller screens.
+   Tamil glyphs are noticeably wider than the Latin names, so the Tamil names
+   get their OWN smaller, fully-fluid size. English names keep the inline
+   Tailwind clamp (unchanged). One consolidated rule — no duplicates/overrides.
    ========================================================================= */
-
 .opening-couple-name {
   white-space: nowrap;
   max-width: 100%;
   line-height: 0.95;
 }
 
-/* Tamil needs slightly smaller display sizing because Tamil glyphs
-   occupy more horizontal space than the Latin names. */
 html[data-lang="ta"] .opening-couple-name {
-  font-size: clamp(1.65rem, 5.5vw, 4.75rem);
-  letter-spacing: 0;
+  /* Fluid size that tracks the viewport and is CAPPED so the longest name
+     (கிருத்திகா ஸ்ரீ) stays on one line, centred, and clear of the card
+     padding from 320px up to desktop:
+       • min 1.5rem  — fits the ~264px inner width at 320px with margin,
+       • 7vw         — scales smoothly with the card on tablets,
+       • max 3.25rem — stays inside max-w-2xl on desktop.
+     To make the Tamil names bigger/smaller overall, adjust these three values. */
+  font-size: clamp(1.5rem, 7vw, 3.25rem);
+  white-space: nowrap;
   word-break: keep-all;
   overflow: visible;
-}
 
-/* Extra protection for very small phones */
-@media (max-width: 380px) {
-  html[data-lang="ta"] .opening-couple-name {
-    font-size: clamp(1.55rem, 5.8vw, 2.4rem);
-  }
-}
-
-/* Tamil landing-page names:
-   Use solid gold instead of the gradient so every Tamil glyph
-   remains completely filled and clearly visible. */
-html[data-lang="ta"] .opening-couple-name {
+  /* Solid gold (not the clipped gradient) so every Tamil glyph stays filled. */
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
@@ -200,6 +239,68 @@ html[data-lang="ta"] .opening-couple-name {
   font-family: var(--font-noto-tamil), "Noto Serif Tamil", serif;
   font-weight: 700;
   letter-spacing: 0;
-  white-space: nowrap;
-  word-break: keep-all;
+}
+
+/* =========================================================================
+   COUNTDOWN — Taj Mahal background motion
+   The animated GIF is itself gently re-timed (700ms/frame). On top of that a
+   very slow, subtle zoom drift gives a smooth, premium feel without being
+   distracting. The drift starts slightly zoomed (scale > 1) so cover-sized
+   edges are never exposed. The static first-frame layer is swapped in for
+   visitors who prefer reduced motion.
+   ========================================================================= */
+.countdown-bg-anim {
+  transform-origin: center;
+  will-change: transform;
+  animation: countdown-drift 60s ease-in-out infinite alternate;
+}
+
+.countdown-bg-still {
+  display: none;
+}
+
+@keyframes countdown-drift {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Hide the animated GIF, show the still frame, and stop the drift. */
+  .countdown-bg-anim {
+    display: none;
+  }
+  .countdown-bg-still {
+    display: block;
+  }
+}
+
+/* =========================================================================
+   OPENING SCREEN — couple photo
+   The gentle Ken-Burns zoom runs ONLY on larger screens (sm+). On phones the
+   photo is sized with `contain` (see OpeningScreen.jsx) and gets NO zoom at all,
+   so the full bride + groom are always visible — never zoomed-in or cropped,
+   from the very first paint (pure CSS, no JS/hydration flash). Respects reduced
+   motion.
+   ========================================================================= */
+.opening-kenburns {
+  transform-origin: center top;
+}
+@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .opening-kenburns {
+    animation: opening-kenburns 28s ease-in-out infinite;
+    will-change: transform;
+  }
+}
+@keyframes opening-kenburns {
+  0%,
+  100% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
 }

@@ -17,9 +17,34 @@ export const weddingAssets = {
   // Optional photo of the reception hall / mandap (shown in Reception Details).
   receptionHall: "/images/reception-hall.jpg", // CHANGE RECEPTION HALL IMAGE HERE
 
+  // Closing-section background — the supplied couple portrait. A deep maroon/brown
+  // overlay (in ClosingSection.jsx) keeps the gold + ivory text readable while the
+  // warm greens/pinks of the photo match the theme. CHANGE HERE.
+  closingBackground: "/images/closing-couple.jpg",
+
+  // Wedding invitation PDF (the real, supplied document). Served from /public at
+  // the root path below; opened in a new tab by the "View Invitation PDF"
+  // buttons. CHANGE HERE.
+  invitationPdf: "/invitations/wedding-invitation.pdf",
+
   // Hero background — vintage sepia South-Indian temple courtyard art. Already
   // ivory/sepia toned, so it blends into the page's ivory theme. CHANGE HERE.
   heroBackground: "/images/hero-temple.png",
+
+  // Countdown background — animated golden-hour Taj Mahal with garden
+  // reflections. Already warm/gold toned; an ivory wash overlay (in
+  // Countdown.jsx) melts it into the page theme. The "-slow" GIF is a gently
+  // re-timed version (700ms/frame) for an elegant, unhurried movement. The
+  // "-still" PNG is the first frame, shown to visitors who prefer reduced
+  // motion. CHANGE HERE.
+  countdownBackground: "/images/taj-countdown-slow.gif",
+  countdownBackgroundStill: "/images/taj-countdown-still.png",
+
+  // Reception background — soft cream/gold silk texture. Rendered ONLY in the
+  // inner area between the left/right lotus vines (see ReceptionDetails.jsx), so
+  // it never covers the borders. Already ivory-toned, so it blends with the
+  // theme. CHANGE HERE.
+  receptionBackground: "/images/reception-texture.png",
 
   // Background music (optional, user-controlled — never autoplays).
   // Replace with an appropriately licensed track.

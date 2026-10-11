@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useContent } from "./LanguageContext";
 import { OrnamentalDivider, LotusMark, TempleArchFrame } from "./Decorations";
+import { popUp, vp } from "./motion";
 
 // =============================================================================
 // Section 2 — Main Invitation
@@ -15,12 +16,12 @@ export default function InvitationSection() {
   const { bride, groom, event, venue, messages, ui } = useContent();
 
   return (
-    <section id="invitation" className="relative w-full px-5 py-20 sm:px-8 sm:py-24">
+    <section id="invitation" className="px-inner relative w-full py-20 sm:py-24">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        variants={popUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={vp}
         className="gold-frame relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-ivory/85 px-7 pb-16 pt-20 text-center shadow-sm sm:px-14 sm:pb-20 sm:pt-24 md:pt-28 lg:pt-32"
       >
         {/* Scalable gold temple-arch frame with lotus corners (fits any height) */}

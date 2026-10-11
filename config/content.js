@@ -81,6 +81,8 @@ export const content = {
       receptionInviteHeading: "Wedding Reception Invitation",
       celebrationTagline: "A Celebration of Love & Togetherness",
       openInvitation: "Open Invitation",
+      viewInvitationPdf: "View Invitation PDF",
+      viewWeddingInvitationPdf: "View Wedding Invitation PDF",
       scrollToExplore: "Scroll to explore",
 
       // Invitation + reception section intro line
@@ -195,6 +197,8 @@ export const content = {
       receptionInviteHeading: "திருமண வரவேற்பு அழைப்பிதழ்",
       celebrationTagline: "அன்பும் இணைவும் நிறைந்த கொண்டாட்டம்",
       openInvitation: "அழைப்பிதழைத் திறக்க",
+      viewInvitationPdf: "அழைப்பிதழ் PDF ஐப் பார்க்க",
+      viewWeddingInvitationPdf: "திருமண அழைப்பிதழ் PDF ஐப் பார்க்க",
       scrollToExplore: "கீழே உருட்டிப் பாருங்கள்",
 
       invitedLine: "அன்புடன் அழைக்கிறோம்",

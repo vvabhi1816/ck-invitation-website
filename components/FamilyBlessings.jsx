@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useContent } from "./LanguageContext";
 import { OrnamentalDivider, LotusMark, FloralBottom, MandalaCorner } from "./Decorations";
+import { stagger, fromLeft, fromRight, fadeUp, vp } from "./motion";
 
 // =============================================================================
 // Section 9 — Family Blessings
@@ -16,10 +17,10 @@ export default function FamilyBlessings() {
   return (
     <section className="relative w-full px-5 py-20 sm:px-8 sm:py-24">
       <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={vp}
         className="gold-frame relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-ivory/85 px-6 pb-36 pt-14 text-center shadow-sm sm:px-12"
       >
         <MandalaCorner position="top-left" />
@@ -41,20 +42,26 @@ export default function FamilyBlessings() {
 
         <OrnamentalDivider className="my-7" />
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <div>
+        <motion.div
+          variants={stagger()}
+          initial="hidden"
+          whileInView="show"
+          viewport={vp}
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2"
+        >
+          <motion.div variants={fromLeft}>
             <p className="eyebrow text-xs text-gold">{ui.brideParentsLabel}</p>
             <p className="mt-2 font-heading text-xl font-semibold text-green sm:text-2xl">
               {family.brideParents}
             </p>
-          </div>
-          <div>
+          </motion.div>
+          <motion.div variants={fromRight}>
             <p className="eyebrow text-xs text-gold">{ui.groomParentLabel}</p>
             <p className="mt-2 font-heading text-xl font-semibold text-green sm:text-2xl">
               {family.groomParent}
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
         </div>
       </motion.div>
     </section>

@@ -153,11 +153,16 @@ export function LotusCorner({ position = "top-left", className = "" }) {
     "bottom-right": "rotate-180",
     "bottom-left": "-rotate-90",
   };
+  // All four corners share the SAME fixed inset (8px) from both of their edges,
+  // so the flourishes are symmetrical and tuck cleanly inside the gold frame
+  // without straddling the outer border. Fixed px (not %) keeps them attached to
+  // their corners when the frame height changes or text wraps. Each is anchored
+  // via its matching scale origin (set by the caller), so scaling never drifts.
   const placement = {
-    "top-left": "top-0 left-0",
-    "top-right": "top-0 right-0",
-    "bottom-right": "bottom-0 right-0",
-    "bottom-left": "bottom-0 left-0",
+    "top-left": "top-2 left-2",
+    "top-right": "top-2 right-2",
+    "bottom-right": "bottom-2 right-2",
+    "bottom-left": "bottom-2 left-2",
   };
   return (
     <div className={`pointer-events-none absolute ${placement[position]} ${className}`} aria-hidden="true">
@@ -226,9 +231,14 @@ export function TempleArchFrame({ className = "" }) {
           positioned <svg> with top/bottom offsets sizes itself to its viewBox
           aspect ratio instead of filling, which made the rails stop short of the
           venue details. Divs honour top + bottom, so the arch always grows with
-          the content — in English and Tamil, at every width. */}
-      <div className="absolute inset-x-[4%] bottom-0 top-16 rounded-b-xl border-x-[1.6px] border-b-[1.6px] border-gold/60 sm:top-20 md:top-24 lg:top-28" />
-      <div className="absolute inset-x-[7%] bottom-[5px] top-16 rounded-b-lg border-x border-b border-gold/35 sm:top-20 md:top-24 lg:top-28" />
+          the content — in English and Tamil, at every width.
+
+          Both rails close with a bottom INSET (never bottom-0) so the inner arch
+          lands cleanly inside the outer .gold-frame border instead of crossing it.
+          The two bottom edges keep an even ~8px gap so the corners read as a single
+          concentric double line, matching the double ogee curve at the top. */}
+      <div className="absolute inset-x-[4%] bottom-3 top-16 rounded-b-xl border-x-[1.6px] border-b-[1.6px] border-gold/60 sm:bottom-4 sm:top-20 md:top-24 lg:top-28" />
+      <div className="absolute inset-x-[7%] bottom-6 top-16 rounded-b-lg border-x border-b border-gold/35 sm:bottom-7 sm:top-20 md:top-24 lg:top-28" />
 
       {/* lotus blooms in all four corners, echoing the arch art */}
       <LotusCorner position="top-left" className={`origin-top-left ${corner}`} />
@@ -240,6 +250,92 @@ export function TempleArchFrame({ className = "" }) {
 }
 
 // -----------------------------------------------------------------------------
+// PortraitArchFrame — a complete, premium antique-gold ornamental frame that
+// surrounds a 3:4 arched portrait (bride / groom cards). Drawn as ONE transparent
+// SVG overlaid on the photo's box (viewBox 300×400 = 3:4, so it scales uniformly
+// with the card — ornament stays proportional on every screen and attached to the
+// photo as it resizes). It renders:
+//   • a clearly-visible DOUBLE gold line with an even 16-unit gap, following the
+//     temple-arch shape, with shadow + highlight strokes for a rich metallic look;
+//   • fine gold filigree (bead rows + shoulder scrolls) along the arch and sides;
+//   • gold corner flourishes at the bottom-left and bottom-right.
+// The top of the arch is finished with gold beads along the crown only — no
+// flower/rose/lotus, and nothing hangs down over the face. Uses SOLID colours (no
+// gradient ids) so multiple instances (bride + groom) never clash.
+// -----------------------------------------------------------------------------
+export function PortraitArchFrame({ className = "" }) {
+  const outer = "M3 397 L3 132 C 3 60 72 3 150 3 C 228 3 297 60 297 132 L297 397 Z";
+  const inner = "M19 397 L19 142 C 19 76 85 19 150 19 C 215 19 281 76 281 142 L281 397 Z";
+  const G = "#C99A3D"; // antique gold
+  const HI = "#EAD39A"; // warm highlight
+  const SH = "#7a5a16"; // deep shadow
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 300 400"
+      preserveAspectRatio="none"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* soft shadow under the outer line for depth */}
+      <path d={outer} stroke={SH} strokeWidth="6" opacity="0.28" />
+      {/* the double gold border */}
+      <path d={outer} stroke={G} strokeWidth="3.2" />
+      <path d={inner} stroke={G} strokeWidth="2.4" />
+      {/* metallic highlight sheen on both lines */}
+      <path d={outer} stroke={HI} strokeWidth="1" opacity="0.75" />
+      <path d={inner} stroke={HI} strokeWidth="0.8" opacity="0.7" />
+
+      {/* gold beads tracing the arch crown (finishes the top — no flower) */}
+      <g fill={G}>
+        <circle cx="150" cy="11" r="1.7" />
+        <circle cx="118" cy="14" r="1.5" />
+        <circle cx="182" cy="14" r="1.5" />
+        <circle cx="90" cy="26" r="1.4" />
+        <circle cx="210" cy="26" r="1.4" />
+      </g>
+      <g fill={HI} opacity="0.8">
+        <circle cx="150" cy="11" r="0.7" />
+      </g>
+
+      {/* shoulder scroll filigree where the arch meets the sides (mirrored) */}
+      <g stroke={G} strokeWidth="1.2" fill="none">
+        <path d="M26 150 C 40 150 46 140 44 128" />
+        <path d="M274 150 C 260 150 254 140 256 128" />
+      </g>
+      <g fill={G}>
+        <circle cx="44" cy="128" r="1.5" />
+        <circle cx="256" cy="128" r="1.5" />
+      </g>
+
+      {/* fine bead rows down the sides, inside the double line (mirrored) */}
+      <g fill={G} opacity="0.85">
+        {[205, 265, 325].map((y) => (
+          <circle key={`bl${y}`} cx="11" cy={y} r="1.5" />
+        ))}
+        {[205, 265, 325].map((y) => (
+          <circle key={`br${y}`} cx="289" cy={y} r="1.5" />
+        ))}
+      </g>
+
+      {/* decorative gold corner flourishes at the two bottom corners (mirrored) */}
+      <g stroke={G} fill="none">
+        <path d="M19 380 C 19 357 32 345 56 341" strokeWidth="1.6" />
+        <path d="M19 374 C 41 374 54 362 59 343" strokeWidth="1.1" opacity="0.7" />
+        <path d="M281 380 C 281 357 268 345 244 341" strokeWidth="1.6" />
+        <path d="M281 374 C 259 374 246 362 241 343" strokeWidth="1.1" opacity="0.7" />
+      </g>
+      <g fill={G}>
+        <circle cx="56" cy="341" r="2" />
+        <circle cx="244" cy="341" r="2" />
+        <circle cx="59" cy="343" r="1.4" opacity="0.75" />
+        <circle cx="241" cy="343" r="1.4" opacity="0.75" />
+      </g>
+    </svg>
+  );
+}
+
+// -----------------------------------------------------------------------------
 // SideBorder — a seamless vertical lotus-and-leaf vine along the LEFT or RIGHT
 // viewport edge. The vine lives in /images/decorations/side-vine.svg and is used
 // as a background that SCALES to the element's width (background-size: 100% auto)
@@ -247,11 +343,16 @@ export function TempleArchFrame({ className = "" }) {
 // Visible on every screen size (narrow on phones, wider on desktop); sits behind
 // the content (-z-10) so it never overlaps text or controls, and never causes
 // horizontal scroll. Mirrored on the right so the two sides frame the page.
+//
+// `position` is overridable so the SAME vine can be reused as a section-scoped
+// border that sits ABOVE a section background (e.g. the Countdown's Taj Mahal
+// image) instead of the default page-wide fixed layer. The default keeps the
+// original global behaviour, so page.js is unaffected.
 // -----------------------------------------------------------------------------
-export function SideBorder({ side = "left", className = "" }) {
+export function SideBorder({ side = "left", className = "", position = "fixed inset-y-0 -z-10" }) {
   return (
     <div
-      className={`pointer-events-none fixed inset-y-0 -z-10 bg-repeat-y opacity-50 sm:opacity-60 lg:opacity-70 w-[34px] sm:w-[60px] md:w-[88px] lg:w-[120px] xl:w-[150px] ${
+      className={`pointer-events-none ${position} bg-repeat-y opacity-50 sm:opacity-60 lg:opacity-70 ${SIDE_BORDER_WIDTH} ${
         side === "left" ? "left-0" : "right-0 -scale-x-100"
       } ${className}`}
       style={{
@@ -260,6 +361,39 @@ export function SideBorder({ side = "left", className = "" }) {
       }}
       aria-hidden="true"
     />
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Shared lotus-border geometry. The vertical vines (SideBorder) occupy these
+// responsive WIDTHS at each breakpoint; InnerBackground insets by the SAME
+// values so a section background lands EXACTLY in the gap between the two vines —
+// never under or over them. Keep these two constants in lock-step.
+// -----------------------------------------------------------------------------
+const SIDE_BORDER_WIDTH = "w-[34px] sm:w-[60px] md:w-[88px] lg:w-[120px] xl:w-[150px]";
+const INNER_INSET =
+  "left-[34px] right-[34px] sm:left-[60px] sm:right-[60px] md:left-[88px] md:right-[88px] lg:left-[120px] lg:right-[120px] xl:left-[150px] xl:right-[150px]";
+
+// -----------------------------------------------------------------------------
+// InnerBackground — a decorative background layer PHYSICALLY CONSTRAINED to the
+// inner content area between the left/right lotus vines. Drop it inside a
+// `relative overflow-hidden` section as the FIRST child; pass the image/overlay
+// layers as children (each `absolute inset-0 ...`). It is `inset-y-0` so it grows
+// with the section's real content height (no fixed height that could clip), and
+// clips its own children (`overflow-hidden`) so animated/zoomed backgrounds stay
+// inside the frame. Sits at z-0, beneath section content (z-10); the global vines
+// render at the viewport edges, so they remain fully visible OUTSIDE this box —
+// the background can never reach them. Not a z-index trick: the container itself
+// is narrower than the viewport by exactly the vine widths.
+// -----------------------------------------------------------------------------
+export function InnerBackground({ className = "", children }) {
+  return (
+    <div
+      className={`pointer-events-none absolute inset-y-0 z-0 overflow-hidden ${INNER_INSET} ${className}`}
+      aria-hidden="true"
+    >
+      {children}
+    </div>
   );
 }
 

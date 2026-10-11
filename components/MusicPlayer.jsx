@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Music, Pause, Play, X } from "lucide-react";
 import { weddingAssets } from "@/config/assets";
@@ -9,13 +9,15 @@ import { LotusMark } from "./Decorations";
 // =============================================================================
 // Section 8 — Background Music (floating control with an expandable card)
 // -----------------------------------------------------------------------------
-// • OFF by default — NEVER autoplays (spec + browsers block pre-interaction audio).
-// • Tap the floating lotus button to open the player card, then Play / Pause.
+// • Starts when the visitor presses "Open Invitation" (a real user gesture, so
+//   browsers allow it) — page.js calls the imperative start() exposed below.
+// • The floating lotus button then toggles the music: one tap pauses it while
+//   playing, or opens the player card when it's off — so it's easy to turn off.
 // • The button + card clearly show the playing / paused state.
 // • Missing or unplayable audio is handled gracefully (shows a gentle note;
 //   nothing breaks). Replace the track at config/assets.js (weddingAssets.music).
 // =============================================================================
-export default function MusicPlayer() {
+function MusicPlayer(_props, ref) {
   const audioRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -39,13 +41,31 @@ export default function MusicPlayer() {
     }
   };
 
+  // Imperative start() for page.js to call from the "Open Invitation" click.
+  // Because it runs inside that user gesture, browsers permit playback. A blocked
+  // or failed play() fails quietly (never flips the "music coming soon" note —
+  // only a real load error, via onError, does that), so the visitor can still
+  // start it later from the floating button.
+  const start = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      await audio.play();
+      setPlaying(true);
+    } catch {
+      setPlaying(false);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ start }));
+
   return (
     <>
       <audio
         ref={audioRef}
         src={weddingAssets.music}
         loop
-        preload="none"
+        preload="auto"
         onError={() => setMissing(true)}
         onEnded={() => setPlaying(false)}
       />
@@ -103,11 +123,13 @@ export default function MusicPlayer() {
         <motion.button
           type="button"
           onClick={() => {
-            setOpen((v) => !v);
-            // Convenience: opening the card for the first time doesn't autoplay;
-            // the user presses Play. But tapping the button while the card is
-            // already open acts as a quick play/pause toggle.
-            if (open) toggle();
+            // While playing, a single tap pauses — the easy "turn it off". While
+            // off, a tap reveals the player card so the visitor can start it.
+            if (playing) {
+              toggle();
+            } else {
+              setOpen((v) => !v);
+            }
           }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -129,3 +151,5 @@ export default function MusicPlayer() {
     </>
   );
 }
+
+export default forwardRef(MusicPlayer);

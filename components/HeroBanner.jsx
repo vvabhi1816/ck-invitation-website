@@ -4,88 +4,143 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { weddingAssets } from "@/config/assets";
 import { useContent } from "./LanguageContext";
-import { LotusMark, OrnamentalDivider } from "./Decorations";
+import { LotusMark, OrnamentalDivider, InnerBackground } from "./Decorations";
+import { stagger, fadeUp } from "./motion";
 
-// =============================================================================
-// HeroBanner — the #home landing shown once the invitation is opened.
-// Uses the couple photo as a soft background (graceful: a warm gradient shows
-// through / instead when the file is missing).
-// =============================================================================
 export default function HeroBanner() {
   const { bride, groom, event, ui } = useContent();
+
+  // Detect Tamil from the actual displayed names.
+  const isTamil = /[\u0B80-\u0BFF]/.test(
+    `${bride.shortName} ${groom.shortName}`
+  );
+
+  // Apply these styles only to Tamil names.
+  // The font scales down on narrow screens to prevent wrapping.
+  const tamilNameStyle = {
+    fontFamily: 'var(--font-noto-tamil), "Noto Serif Tamil", serif',
+    fontSize: "clamp(1.15rem, 5.8vw, 3.6rem)",
+    fontWeight: 700,
+    lineHeight: 1.5,
+    letterSpacing: "0",
+    whiteSpace: "nowrap",
+    wordBreak: "keep-all",
+    overflowWrap: "normal",
+    maxWidth: "100%",
+    width: "100%",
+    display: "block",
+    textAlign: "center",
+    marginInline: "auto",
+  };
+
+  const nameClass = isTamil
+    ? "block w-full max-w-full text-center text-gold-gradient"
+    : "block w-full max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal";
 
   return (
     <section
       id="home"
-      className="relative flex min-h-[88vh] w-full items-center justify-center overflow-hidden px-5 py-24 text-center"
+      className="px-inner relative flex min-h-[88vh] w-full items-center justify-center overflow-hidden py-24 text-center"
     >
-      {/* CHANGE HERO BACKGROUND IMAGE HERE → config/assets.js (weddingAssets.heroBackground).
-          The temple-courtyard art is already ivory/sepia toned, so it sits naturally on
-          the page's ivory theme. If the file is missing, only the ivory wash shows. */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('${weddingAssets.heroBackground}')` }}
-        aria-hidden="true"
-      />
-      {/* Ivory wash — a soft radial halo keeps the centred text readable, while the
-          top/bottom linear fade melts the hero edges into the surrounding ivory
-          sections for a seamless blend. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 75% 55% at 50% 48%, rgba(248,241,222,0.70) 0%, rgba(248,241,222,0.12) 70%), linear-gradient(to bottom, rgba(248,241,222,0.92) 0%, rgba(248,241,222,0.32) 26%, rgba(248,241,222,0.38) 66%, rgba(248,241,222,0.97) 100%)",
-        }}
-        aria-hidden="true"
-      />
+      {/* Background remains confined between the lotus borders. */}
+      <InnerBackground>
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('${weddingAssets.heroBackground}')`,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Preserve the existing ivory wash and text readability. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 75% 55% at 50% 48%, rgba(248,241,222,0.70) 0%, rgba(248,241,222,0.12) 70%), linear-gradient(to bottom, rgba(248,241,222,0.92) 0%, rgba(248,241,222,0.32) 26%, rgba(248,241,222,0.38) 66%, rgba(248,241,222,0.97) 100%)",
+          }}
+          aria-hidden="true"
+        />
+      </InnerBackground>
 
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut" }}
-        className="relative z-10 mx-auto max-w-2xl"
+        variants={stagger()}
+        initial="hidden"
+        animate="show"
+        className="relative z-10 mx-auto w-full min-w-0 max-w-2xl px-2 text-center sm:px-4"
       >
-        <LotusMark size={56} className="mb-5" />
-        <p className="font-heading text-xl leading-relaxed text-maroon sm:text-2xl">
+        <motion.div variants={fadeUp}>
+          <LotusMark size={56} className="mb-5" />
+        </motion.div>
+
+        <motion.p
+          variants={fadeUp}
+          className="font-heading text-xl leading-relaxed text-maroon sm:text-2xl"
+        >
           {ui.receptionInviteHeading}
-        </p>
-        <p className="eyebrow mt-3 text-[11px] text-green/80 sm:text-xs">
+        </motion.p>
+
+        <motion.p
+          variants={fadeUp}
+          className="eyebrow mt-3 text-[11px] text-green/80 sm:text-xs"
+        >
           {ui.celebrationTagline}
-        </p>
+        </motion.p>
 
-        <OrnamentalDivider className="my-6" />
+        <motion.div variants={fadeUp}>
+          <OrnamentalDivider className="my-6" />
+        </motion.div>
 
-        <h1 className="mx-auto w-full max-w-[560px] font-heading leading-[0.95]">
-        <span className="block max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal">
-          {bride.shortName}
-        </span>
+        {/* Names: Tamil stays on one line; English retains its styling. */}
+        <motion.h1
+          variants={fadeUp}
+          className="mx-auto w-full min-w-0 max-w-[560px] text-center font-heading"
+        >
+          <span
+            className={nameClass}
+            style={isTamil ? tamilNameStyle : undefined}
+          >
+            {bride.shortName}
+          </span>
 
-        <span className="my-2 block font-heading text-xl text-lotus sm:my-3 sm:text-3xl">
-          &amp;
-        </span>
+          <span className="my-2 block font-heading text-xl text-lotus sm:my-3 sm:text-3xl">
+            &amp;
+          </span>
 
-        <span className="block max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal">
-          {groom.shortName}
-        </span>
-      </h1>
+          <span
+            className={nameClass}
+            style={isTamil ? tamilNameStyle : undefined}
+          >
+            {groom.shortName}
+          </span>
+        </motion.h1>
 
-        <p className="mt-6 font-heading text-xl tracking-[0.3em] text-brown sm:text-2xl">
+        <motion.p
+          variants={fadeUp}
+          className="mt-6 font-heading text-xl tracking-[0.3em] text-brown sm:text-2xl"
+        >
           {event.dateCompact}
-        </p>
+        </motion.p>
 
-        <a
+        <motion.a
+          variants={fadeUp}
           href="#couple"
           className="mt-10 inline-flex flex-col items-center gap-1 font-body text-sm text-green/80 transition-colors hover:text-green"
           aria-label={ui.scrollToExplore}
         >
           {ui.scrollToExplore}
+
           <motion.span
             animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            transition={{
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           >
             <ChevronDown className="h-5 w-5" aria-hidden="true" />
           </motion.span>
-        </a>
+        </motion.a>
       </motion.div>
     </section>
   );

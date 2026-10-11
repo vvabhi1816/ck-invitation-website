@@ -6,7 +6,8 @@ import { wedding } from "@/config/wedding";
 import { weddingAssets } from "@/config/assets";
 import { useContent } from "./LanguageContext";
 import SafeImage from "./SafeImage";
-import { OrnamentalDivider, LotusMark } from "./Decorations";
+import { OrnamentalDivider, LotusMark, InnerBackground } from "./Decorations";
+import { stagger, fromLeft, fromRight, popUp, vp } from "./motion";
 
 // =============================================================================
 // Section 5 — Reception Details
@@ -38,8 +39,23 @@ export default function ReceptionDetails() {
   return (
     <section
       id="reception"
-      className="relative w-full overflow-hidden px-5 py-20 sm:px-8 sm:py-24"
+      className="px-inner relative w-full overflow-hidden py-20 sm:py-24"
     >
+      {/* Background texture confined to the inner area BETWEEN the lotus vines, so
+          it fills only the space enclosed by the borders and never reaches under
+          or over them (see InnerBackground). */}
+      <InnerBackground>
+        {/* LAYER 1 — the silk texture, scaled to cover the inner area without
+            distortion (cover crops gracefully; the texture is abstract/soft). */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('${weddingAssets.receptionBackground}')` }}
+        />
+        {/* LAYER 2 — a very subtle ivory wash to keep the left-column details
+            crisply readable while letting the texture show through. */}
+        <div className="absolute inset-0 bg-ivory/25" />
+      </InnerBackground>
+
       <div className="relative z-10 mx-auto max-w-5xl">
         {/* Heading */}
         <div className="text-center">
@@ -52,21 +68,55 @@ export default function ReceptionDetails() {
           <OrnamentalDivider className="my-8" />
         </div>
 
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-          {/* Left — details */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-7"
-          >
+        {/* Venue photo — a full-width PANORAMIC banner shown at the photograph's
+            own ~5:1 aspect ratio, so the whole illuminated venue is visible with no
+            cropping, stretching, or distortion. It lives inside the section's
+            px-inner padding, so on every screen it stays between the vertical lotus
+            borders with equal side spacing and never overlaps them. Keeps the gold
+            frame + rounded corners to match the wedding theme. */}
+        <motion.div
+          variants={popUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={vp}
+          className="gold-frame overflow-hidden rounded-2xl p-1 shadow-md"
+        >
+          {/* CHANGE RECEPTION HALL IMAGE HERE → config/assets.js (weddingAssets.receptionHall).
+              A taller aspect ratio (2:1 on phones → 5:2 on larger screens) gives the
+              venue more vertical presence than the raw ~5:1 panorama. object-cover
+              with a slightly right-of-centre focus keeps the illuminated building and
+              the "SMB Vishesh Mahal" sign in frame while still showing the lit
+              canopy; it never stretches or distorts the photo. */}
+          <SafeImage
+            src={weddingAssets.receptionHall}
+            alt={`${venue.name} illuminated at night`}
+            placeholderLabel="Venue photo — add reception-hall.jpg"
+            rounded="rounded-xl"
+            className="aspect-[2/1] w-full object-cover object-[60%_center] sm:aspect-[5/2]"
+          />
+        </motion.div>
+
+        {/* Date / time / venue / address + Get Directions — unchanged content,
+            centred beneath the banner. */}
+        <motion.div
+          variants={stagger()}
+          initial="hidden"
+          whileInView="show"
+          viewport={vp}
+          className="mx-auto mt-12 max-w-md space-y-7"
+        >
+          {/* Rows alternate: left, right, left — then the button slides in. */}
+          <motion.div variants={fromLeft}>
             <DetailRow icon={Calendar} label={ui.dateLabelIcon}>
               <p className="font-heading text-xl font-semibold text-green">{event.dateLabel}</p>
             </DetailRow>
+          </motion.div>
+          <motion.div variants={fromRight}>
             <DetailRow icon={Clock} label={ui.timeLabelIcon}>
               <p className="font-heading text-xl font-semibold text-green">{event.timeLabel}</p>
             </DetailRow>
+          </motion.div>
+          <motion.div variants={fromLeft}>
             <DetailRow icon={MapPin} label={ui.venueLabelIcon}>
               <p className="font-heading text-lg font-semibold text-green">{venue.name}</p>
               <p className="mt-1 text-sm leading-relaxed">
@@ -77,38 +127,21 @@ export default function ReceptionDetails() {
                 ))}
               </p>
             </DetailRow>
-
-            <motion.a
-              href={mapsSearchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-full border border-gold bg-maroon px-8 py-3 font-heading text-base font-medium tracking-wider text-ivory shadow-md transition-colors hover:bg-green"
-            >
-              <Navigation2 className="h-5 w-5" aria-hidden="true" />
-              {ui.getDirections}
-            </motion.a>
           </motion.div>
 
-          {/* Right — reception hall photo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
-            className="gold-frame overflow-hidden rounded-2xl p-1 shadow-md"
+          <motion.a
+            variants={fromRight}
+            href={mapsSearchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 rounded-full border border-gold bg-maroon px-8 py-3 font-heading text-base font-medium tracking-wider text-ivory shadow-md transition-colors hover:bg-green"
           >
-            {/* CHANGE RECEPTION HALL IMAGE HERE → config/assets.js (weddingAssets.receptionHall) */}
-            <SafeImage
-              src={weddingAssets.receptionHall}
-              alt={`${venue.name} reception venue`}
-              placeholderLabel="Venue photo — add reception-hall.jpg"
-              rounded="rounded-xl"
-              className="aspect-[4/3] w-full object-cover"
-            />
-          </motion.div>
-        </div>
+            <Navigation2 className="h-5 w-5" aria-hidden="true" />
+            {ui.getDirections}
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );

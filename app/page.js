@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, MotionConfig } from "framer-motion";
 
 import { LanguageProvider } from "@/components/LanguageContext";
@@ -13,7 +13,7 @@ import CoupleSection from "@/components/CoupleSection";
 import Countdown from "@/components/Countdown";
 import ReceptionDetails from "@/components/ReceptionDetails";
 // import VenueSection from "@/components/VenueSection"; // Venue section hidden for now
-import PhotoGallery from "@/components/PhotoGallery";
+// import PhotoGallery from "@/components/PhotoGallery"; // "Our Memories" gallery temporarily disabled — re-enable here + in Navigation.jsx
 import FamilyBlessings from "@/components/FamilyBlessings";
 import ClosingSection from "@/components/ClosingSection";
 import MusicPlayer from "@/components/MusicPlayer";
@@ -41,6 +41,16 @@ import MusicPlayer from "@/components/MusicPlayer";
 export default function Home() {
   // `opened` controls the transition from the opening overlay to the main site.
   const [opened, setOpened] = useState(false);
+  // Ref to the music player so pressing "Open Invitation" can start the song
+  // within that user gesture (browsers allow audio started from a real click).
+  const musicRef = useRef(null);
+
+  // Opens the site AND starts the background music. The visitor can turn it off
+  // anytime from the floating music button (bottom-right).
+  const handleOpen = () => {
+    setOpened(true);
+    musicRef.current?.start();
+  };
 
   return (
     // reducedMotion="user" makes Framer Motion honor the OS "reduce motion"
@@ -57,13 +67,13 @@ export default function Home() {
 
           {/* Opening overlay — fades out on "Open Invitation" */}
           <AnimatePresence>
-            {!opened && <OpeningScreen onOpen={() => setOpened(true)} />}
+            {!opened && <OpeningScreen onOpen={handleOpen} />}
           </AnimatePresence>
 
-          {/* Navigation appears after the invitation is opened.
-              Music stays OFF until the visitor presses play (see MusicPlayer). */}
+          {/* Navigation appears after the invitation is opened. Music starts on
+              "Open Invitation" and can be turned off from the floating button. */}
           <Navigation visible={opened} />
-          <MusicPlayer />
+          <MusicPlayer ref={musicRef} />
 
           {/* Main content */}
           <HeroBanner />
@@ -75,7 +85,10 @@ export default function Home() {
               section still has a working "Get Directions" link. Re-enable by
               uncommenting this and the "venue" nav link in Navigation.jsx. */}
           {/* <VenueSection /> */}
-          <PhotoGallery />
+          {/* "Our Memories" photo gallery temporarily disabled (component + images
+              kept in the project). Re-enable by uncommenting the import above, the
+              line below, and the gallery nav link in Navigation.jsx. */}
+          {/* <PhotoGallery /> */}
           <FamilyBlessings />
           <ClosingSection />
         </main>

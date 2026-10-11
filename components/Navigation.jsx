@@ -25,7 +25,8 @@ const LINKS = [
   { key: "reception", href: "#reception" },
   // Venue ("Find Us Here") section hidden — re-enable with the <VenueSection /> in page.js.
   // { key: "venue", href: "#venue" },
-  { key: "gallery", href: "#gallery" },
+  // "Our Memories" gallery temporarily disabled — re-enable with <PhotoGallery /> in page.js.
+  // { key: "gallery", href: "#gallery" },
 ];
 
 export default function Navigation({ visible = true }) {
