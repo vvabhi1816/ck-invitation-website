@@ -37,8 +37,8 @@ export const weddingAssets = {
   // re-timed version (700ms/frame) for an elegant, unhurried movement. The
   // "-still" PNG is the first frame, shown to visitors who prefer reduced
   // motion. CHANGE HERE.
-  countdownBackground: "/images/taj-countdown-slow.gif",
-  countdownBackgroundStill: "/images/taj-countdown-still.png",
+  // Countdown background video
+  countdownBackground: "/images/countdownback.mp4",
 
   // Reception background — soft cream/gold silk texture. Rendered ONLY in the
   // inner area between the left/right lotus vines (see ReceptionDetails.jsx), so
