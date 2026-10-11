@@ -4,18 +4,23 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { weddingAssets } from "@/config/assets";
 import { useContent } from "./LanguageContext";
-import { LotusMark, OrnamentalDivider, InnerBackground } from "./Decorations";
+import {
+  LotusMark,
+  OrnamentalDivider,
+  InnerBackground,
+} from "./Decorations";
 import { stagger, fadeUp } from "./motion";
+import FallingPetals from "./FallingPetals";
 
 export default function HeroBanner() {
   const { bride, groom, event, ui } = useContent();
 
-  // Detect Tamil based on the currently displayed names.
+  // Detect Tamil from the currently displayed names.
   const isTamil = /[\u0B80-\u0BFF]/.test(
     `${bride.shortName} ${groom.shortName}`
   );
 
-  // Tamil names stay on one line and shrink on smaller screens.
+  // Tamil names remain on one line and scale down on narrow screens.
   const tamilNameStyle = {
     fontFamily: 'var(--font-noto-tamil), "Noto Serif Tamil", serif',
     fontSize: "clamp(1rem, 5.8vw, 3.6rem)",
@@ -31,19 +36,23 @@ export default function HeroBanner() {
     textAlign: "center",
     marginInline: "auto",
     color: "#A66B08",
-    textShadow: "0 1px 1px rgba(255, 250, 230, 0.9)",
+    textShadow:
+      "0 1px 1px rgba(255, 250, 230, 0.9), 0 2px 5px rgba(92, 54, 9, 0.18)",
   };
 
-  // Rich gold for English and Tamil names.
+  // Rich gold with a subtle shadow for contrast against the background.
   const nameClass =
     "block w-full max-w-full text-center font-semibold text-[#B47B12] [text-shadow:0_1px_1px_rgba(255,250,230,0.95),0_2px_5px_rgba(92,54,9,0.18)]";
+
+  const englishNameClass =
+    "break-words text-[clamp(2.35rem,9vw,4.75rem)] tracking-normal";
 
   return (
     <section
       id="home"
       className="px-inner relative flex min-h-[88vh] w-full items-center justify-center overflow-hidden py-24 text-center"
     >
-      {/* Background stays between the lotus borders. */}
+      {/* Background and existing ivory overlay */}
       <InnerBackground>
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -53,7 +62,6 @@ export default function HeroBanner() {
           aria-hidden="true"
         />
 
-        {/* Existing ivory overlay preserved. */}
         <div
           className="absolute inset-0"
           style={{
@@ -64,6 +72,10 @@ export default function HeroBanner() {
         />
       </InnerBackground>
 
+      {/* Animated petals stay behind the text and do not block interaction. */}
+      <FallingPetals />
+
+      {/* Hero content and existing reveal animation */}
       <motion.div
         variants={stagger()}
         initial="hidden"
@@ -92,17 +104,13 @@ export default function HeroBanner() {
           <OrnamentalDivider className="my-6" />
         </motion.div>
 
-        {/* Names: rich gold, centered, and responsive in both languages. */}
+        {/* Bride and groom names */}
         <motion.h1
           variants={fadeUp}
           className="mx-auto w-full min-w-0 max-w-[560px] text-center font-heading"
         >
           <span
-            className={`${nameClass} ${
-              isTamil
-                ? ""
-                : "break-words text-[clamp(2.35rem,9vw,4.75rem)] tracking-normal"
-            }`}
+            className={`${nameClass} ${isTamil ? "" : englishNameClass}`}
             style={isTamil ? tamilNameStyle : undefined}
           >
             {bride.shortName}
@@ -113,11 +121,7 @@ export default function HeroBanner() {
           </span>
 
           <span
-            className={`${nameClass} ${
-              isTamil
-                ? ""
-                : "break-words text-[clamp(2.35rem,9vw,4.75rem)] tracking-normal"
-            }`}
+            className={`${nameClass} ${isTamil ? "" : englishNameClass}`}
             style={isTamil ? tamilNameStyle : undefined}
           >
             {groom.shortName}
