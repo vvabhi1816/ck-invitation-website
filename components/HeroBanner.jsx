@@ -10,16 +10,15 @@ import { stagger, fadeUp } from "./motion";
 export default function HeroBanner() {
   const { bride, groom, event, ui } = useContent();
 
-  // Detect Tamil from the actual displayed names.
+  // Detect Tamil based on the currently displayed names.
   const isTamil = /[\u0B80-\u0BFF]/.test(
     `${bride.shortName} ${groom.shortName}`
   );
 
-  // Apply these styles only to Tamil names.
-  // The font scales down on narrow screens to prevent wrapping.
+  // Tamil names stay on one line and shrink on smaller screens.
   const tamilNameStyle = {
     fontFamily: 'var(--font-noto-tamil), "Noto Serif Tamil", serif',
-    fontSize: "clamp(1.15rem, 5.8vw, 3.6rem)",
+    fontSize: "clamp(1rem, 5.8vw, 3.6rem)",
     fontWeight: 700,
     lineHeight: 1.5,
     letterSpacing: "0",
@@ -31,18 +30,20 @@ export default function HeroBanner() {
     display: "block",
     textAlign: "center",
     marginInline: "auto",
+    color: "#A66B08",
+    textShadow: "0 1px 1px rgba(255, 250, 230, 0.9)",
   };
 
-  const nameClass = isTamil
-    ? "block w-full max-w-full text-center text-gold-gradient"
-    : "block w-full max-w-full break-words text-gold-gradient text-[clamp(2.35rem,9vw,4.75rem)] font-semibold tracking-normal";
+  // Rich gold for English and Tamil names.
+  const nameClass =
+    "block w-full max-w-full text-center font-semibold text-[#B47B12] [text-shadow:0_1px_1px_rgba(255,250,230,0.95),0_2px_5px_rgba(92,54,9,0.18)]";
 
   return (
     <section
       id="home"
       className="px-inner relative flex min-h-[88vh] w-full items-center justify-center overflow-hidden py-24 text-center"
     >
-      {/* Background remains confined between the lotus borders. */}
+      {/* Background stays between the lotus borders. */}
       <InnerBackground>
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -52,7 +53,7 @@ export default function HeroBanner() {
           aria-hidden="true"
         />
 
-        {/* Preserve the existing ivory wash and text readability. */}
+        {/* Existing ivory overlay preserved. */}
         <div
           className="absolute inset-0"
           style={{
@@ -91,13 +92,17 @@ export default function HeroBanner() {
           <OrnamentalDivider className="my-6" />
         </motion.div>
 
-        {/* Names: Tamil stays on one line; English retains its styling. */}
+        {/* Names: rich gold, centered, and responsive in both languages. */}
         <motion.h1
           variants={fadeUp}
           className="mx-auto w-full min-w-0 max-w-[560px] text-center font-heading"
         >
           <span
-            className={nameClass}
+            className={`${nameClass} ${
+              isTamil
+                ? ""
+                : "break-words text-[clamp(2.35rem,9vw,4.75rem)] tracking-normal"
+            }`}
             style={isTamil ? tamilNameStyle : undefined}
           >
             {bride.shortName}
@@ -108,7 +113,11 @@ export default function HeroBanner() {
           </span>
 
           <span
-            className={nameClass}
+            className={`${nameClass} ${
+              isTamil
+                ? ""
+                : "break-words text-[clamp(2.35rem,9vw,4.75rem)] tracking-normal"
+            }`}
             style={isTamil ? tamilNameStyle : undefined}
           >
             {groom.shortName}

@@ -12,7 +12,6 @@ import {
 } from "./Decorations";
 import { stagger, fadeUp, vp } from "./motion";
 
-// Calculate the remaining time until the reception starts or ends.
 function getStatus(startMs, endMs, nowMs) {
   if (nowMs >= endMs) return { phase: "ended" };
   if (nowMs >= startMs) return { phase: "live" };
@@ -34,19 +33,19 @@ function Unit({ value, label }) {
 
   return (
     <div className="flex min-w-0 flex-col items-center">
-      <div className="gold-frame flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ivory/85 min-[360px]:h-14 min-[360px]:w-14 min-[400px]:h-16 min-[400px]:w-16 sm:h-24 sm:w-24">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-[#c99a3d] bg-[#fffaf0]/95 shadow-[0_4px_14px_rgba(65,38,15,0.22)] min-[360px]:h-14 min-[360px]:w-14 min-[400px]:h-16 min-[400px]:w-16 sm:h-24 sm:w-24">
         <motion.span
           key={display}
-          initial={{ opacity: 0.3, y: -6 }}
+          initial={{ opacity: 0.4, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="font-heading text-xl font-semibold text-maroon min-[360px]:text-2xl min-[400px]:text-3xl sm:text-4xl"
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="font-heading text-xl font-bold leading-none text-[#852337] min-[360px]:text-2xl min-[400px]:text-3xl sm:text-4xl"
         >
           {display}
         </motion.span>
       </div>
 
-      <span className="eyebrow mt-2 text-center text-[9px] text-green/90 min-[360px]:text-[10px] sm:text-xs">
+      <span className="mt-2 text-center text-[10px] font-bold uppercase tracking-[0.12em] text-[#24491f] drop-shadow-[0_1px_1px_rgba(255,250,240,0.9)] min-[400px]:text-xs sm:tracking-[0.2em]">
         {label}
       </span>
     </div>
@@ -76,7 +75,6 @@ export default function Countdown() {
     };
 
     tick();
-
     const intervalId = setInterval(tick, 1000);
 
     return () => clearInterval(intervalId);
@@ -87,7 +85,7 @@ export default function Countdown() {
       id="countdown"
       className="px-inner relative isolate w-full overflow-hidden py-16 sm:py-24"
     >
-      {/* Background video stays inside the area between the lotus borders. */}
+      {/* Animated video background */}
       <InnerBackground>
         <div
           className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -108,39 +106,39 @@ export default function Countdown() {
             />
           </video>
 
-          {/* Warm ivory overlay preserves the wedding theme and text contrast. */}
+          {/* Stronger warm overlay improves text contrast without hiding the video. */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(248,241,222,0.58) 0%, rgba(248,241,222,0.38) 25%, rgba(248,241,222,0.32) 65%, rgba(248,241,222,0.72) 100%)",
+                "linear-gradient(to bottom, rgba(248,241,222,0.78) 0%, rgba(248,241,222,0.62) 35%, rgba(248,241,222,0.60) 70%, rgba(248,241,222,0.82) 100%), linear-gradient(rgba(255,248,232,0.12), rgba(55,30,17,0.12))",
             }}
           />
         </div>
       </InnerBackground>
 
       {/* Countdown content */}
-      <div className="relative z-10 mx-auto w-full max-w-3xl px-1 text-center sm:px-4">
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-1 text-center sm:px-4">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="show"
           viewport={vp}
         >
-          <LotusMark size={48} className="mb-4" />
+          <LotusMark size={52} className="mb-4" />
 
-          <p className="eyebrow text-xs text-gold">
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#80520c] drop-shadow-[0_1px_1px_rgba(255,250,240,0.95)] sm:text-sm">
             {ui.saveTheDate}
           </p>
 
-          <h2 className="countdown-title mx-auto mt-2 w-full max-w-full break-words font-heading text-2xl font-semibold leading-tight text-maroon min-[360px]:text-3xl sm:text-5xl">
+          <h2 className="countdown-title mx-auto mt-3 w-full max-w-full break-words font-heading text-3xl font-bold leading-tight text-[#842337] [text-shadow:0_1px_1px_rgba(255,250,240,0.95)] min-[400px]:text-4xl sm:text-5xl md:text-6xl">
             {ui.countingDown}
           </h2>
 
-          <OrnamentalDivider className="my-6 sm:my-7" />
+          <OrnamentalDivider className="my-6 sm:my-8" />
         </motion.div>
 
-        {/* Timer states */}
+        {/* Timer */}
         {!mounted ? (
           <div className="flex w-full justify-center gap-2 min-[360px]:gap-3 sm:gap-6">
             {[ui.days, ui.hours, ui.minutes, ui.seconds].map((label) => (
@@ -172,22 +170,22 @@ export default function Countdown() {
             </motion.div>
           </motion.div>
         ) : status.phase === "live" ? (
-          <p className="break-words font-heading text-2xl font-semibold text-green sm:text-4xl">
+          <p className="break-words rounded-2xl border border-[#c99a3d] bg-[#fffaf0]/90 px-4 py-5 font-heading text-2xl font-bold text-[#24491f] shadow-md sm:text-4xl">
             {ui.celebrationBegun}
           </p>
         ) : (
-          <div>
-            <p className="break-words font-heading text-2xl font-semibold text-green sm:text-4xl">
+          <div className="rounded-2xl border border-[#c99a3d] bg-[#fffaf0]/90 px-4 py-5 shadow-md">
+            <p className="break-words font-heading text-2xl font-bold text-[#24491f] sm:text-4xl">
               {ui.gratitudeTitle}
             </p>
 
-            <p className="mt-3 font-body text-base italic text-brown/90 sm:text-lg">
+            <p className="mt-3 font-body text-base font-semibold text-[#493126] sm:text-lg">
               {ui.gratitudeSub}
             </p>
           </div>
         )}
 
-        <p className="mx-auto mt-7 max-w-full break-words font-body text-sm leading-relaxed text-brown sm:mt-8 sm:text-base">
+        <p className="mx-auto mt-7 max-w-2xl rounded-xl border border-[#c99a3d]/60 bg-[#fffaf0]/85 px-3 py-3 font-body text-sm font-semibold leading-relaxed text-[#40281e] shadow-sm sm:mt-9 sm:text-base md:text-lg">
           {event.dateLabel} &middot; {event.timeLabel} &middot; {venue.name}
         </p>
       </div>

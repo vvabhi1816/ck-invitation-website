@@ -15,9 +15,25 @@ import { stagger, fadeUp, vp } from "./motion";
 export default function ClosingSection() {
   const { bride, groom, event, venue, messages, ui } = useContent();
 
+  // Detect Tamil so long Tamil labels remain readable and responsive.
+  const isTamil = /[\u0B80-\u0BFF]/.test(
+    `${bride.shortName} ${groom.shortName} ${messages.closing}`
+  );
+
+  const nameStyle = {
+    color: "#F4C65B",
+    textShadow:
+      "0 2px 3px rgba(25, 10, 8, 0.95), 0 0 12px rgba(25, 10, 8, 0.65)",
+  };
+
+  const readableTextStyle = {
+    color: "#FFF8E8",
+    textShadow: "0 2px 4px rgba(20, 8, 8, 0.95)",
+  };
+
   return (
     <footer className="relative isolate w-full overflow-hidden px-4 py-12 text-center sm:px-8 sm:py-20">
-      {/* Full closing background image */}
+      {/* Original couple photograph fills the entire closing section. */}
       <InnerBackground>
         <div
           className="absolute inset-0 overflow-hidden"
@@ -26,18 +42,27 @@ export default function ClosingSection() {
           <img
             src="/images/closing-couple1.jpg"
             alt=""
-            className="h-full w-full object-cover object-center md:object-[center_30%]"
-            style={{ objectPosition: "center 10%" }}
+            className="h-full w-full object-cover object-[center_10%] md:object-[center_20%]"
             draggable="false"
           />
         </div>
 
-        {/* Readability overlay without blurring the original image */}
+        {/* Darker overlay improves contrast without blurring the photograph. */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(35,16,18,0.28) 0%, rgba(35,16,18,0.42) 55%, rgba(35,16,18,0.58) 100%)",
+              "linear-gradient(to bottom, rgba(24, 10, 12, 0.58) 0%, rgba(24, 10, 12, 0.48) 30%, rgba(24, 10, 12, 0.58) 65%, rgba(24, 10, 12, 0.76) 100%)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Soft central backing makes the text easier to read over busy areas. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 75% 65% at 50% 48%, rgba(28, 13, 14, 0.28) 0%, rgba(28, 13, 14, 0.10) 65%, transparent 100%)",
           }}
           aria-hidden="true"
         />
@@ -46,12 +71,12 @@ export default function ClosingSection() {
       {/* Decorative lotus flowers */}
       <FloralBottom
         width={160}
-        className="pointer-events-none opacity-70 sm:[&>svg]:w-[220px]"
+        className="pointer-events-none opacity-90 sm:[&>svg]:w-[220px]"
       />
 
-      {/* Closing content and reveal animations */}
+      {/* Animated closing content */}
       <motion.div
-        variants={stagger()}
+        variants={stagger(0.14)}
         initial="hidden"
         whileInView="show"
         viewport={vp}
@@ -61,35 +86,61 @@ export default function ClosingSection() {
           <LotusMark size={52} className="mb-4 sm:mb-6" />
         </motion.div>
 
+        {/* Closing heading */}
         <motion.p
           variants={fadeUp}
-          className="eyebrow text-xs text-gold-soft sm:text-sm"
+          className="eyebrow text-xs font-bold sm:text-sm"
+          style={{
+            color: "#FFE5A0",
+            textShadow: "0 2px 5px rgba(20, 8, 8, 0.95)",
+          }}
         >
           {ui.withLoveJoy}
         </motion.p>
 
-        {/* Bride and groom names */}
+        {/* Bride and groom names — brighter gold with a dark shadow. */}
         <motion.h2
           variants={fadeUp}
           className="mt-4 w-full min-w-0 font-heading leading-tight"
         >
-          <span className="block break-words text-gold-gradient text-3xl font-semibold tracking-normal sm:text-5xl md:text-6xl">
+          <span
+            className={`block w-full font-semibold ${
+              isTamil
+                ? "whitespace-nowrap text-[clamp(1rem,5.8vw,3.5rem)]"
+                : "break-words text-3xl tracking-normal sm:text-5xl md:text-6xl"
+            }`}
+            style={nameStyle}
+          >
             {bride.shortName}
           </span>
 
-          <span className="my-2 block font-heading text-xl text-lotus sm:text-2xl">
+          <span
+            className="my-2 block font-heading text-xl font-semibold sm:text-2xl"
+            style={{
+              color: "#FF6B96",
+              textShadow: "0 2px 4px rgba(20, 8, 8, 0.95)",
+            }}
+          >
             &amp;
           </span>
 
-          <span className="block break-words text-gold-gradient text-3xl font-semibold tracking-normal sm:text-5xl md:text-6xl">
+          <span
+            className={`block w-full font-semibold ${
+              isTamil
+                ? "whitespace-nowrap text-[clamp(1rem,5.8vw,3.5rem)]"
+                : "break-words text-3xl tracking-normal sm:text-5xl md:text-6xl"
+            }`}
+            style={nameStyle}
+          >
             {groom.shortName}
           </span>
         </motion.h2>
 
-        {/* Wedding date */}
+        {/* Date */}
         <motion.p
           variants={fadeUp}
-          className="mt-5 max-w-full break-words font-heading text-base tracking-[0.18em] text-ivory/95 sm:mt-6 sm:text-2xl sm:tracking-[0.3em]"
+          className="mt-5 max-w-full break-words font-heading text-base font-semibold tracking-[0.18em] sm:mt-6 sm:text-2xl sm:tracking-[0.3em]"
+          style={readableTextStyle}
         >
           {event.dateCompact}
         </motion.p>
@@ -101,12 +152,17 @@ export default function ClosingSection() {
         {/* Closing message */}
         <motion.p
           variants={fadeUp}
-          className="max-w-full break-words px-1 font-body text-base italic leading-relaxed text-ivory/95 sm:text-xl"
+          className="max-w-full break-words rounded-xl px-3 py-2 font-body text-base font-semibold italic leading-relaxed sm:text-xl"
+          style={{
+          color: "#FFF8E8",
+          textShadow: "none",
+          backgroundColor: "transparent",
+        }}
         >
           “{messages.closing}”
         </motion.p>
 
-        {/* Responsive PDF button */}
+        {/* Invitation PDF button */}
         <motion.a
           variants={fadeUp}
           href={weddingAssets.invitationPdf}
@@ -114,10 +170,10 @@ export default function ClosingSection() {
           rel="noopener noreferrer"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="mx-auto mt-7 box-border flex w-full min-w-0 max-w-[240px] items-center justify-center gap-2 rounded-full border border-gold-soft bg-ivory/15 px-3 py-3 font-heading text-sm font-medium leading-snug tracking-normal text-ivory shadow-md backdrop-blur-sm transition-colors hover:bg-ivory/25 focus-visible:outline-none sm:mt-9 sm:max-w-sm sm:px-5 sm:text-base"
+          className="mx-auto mt-7 box-border flex w-full min-w-0 max-w-[280px] items-center justify-center gap-2 rounded-full border-2 border-[#F4D17D] bg-[#321C20]/85 px-4 py-3 font-heading text-sm font-semibold leading-snug tracking-normal text-[#FFF8E8] shadow-[0_4px_18px_rgba(0,0,0,0.4)] transition-colors hover:bg-[#4A252B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFE5A0] sm:mt-9 sm:max-w-sm sm:px-5 sm:text-base"
         >
           <FileText
-            className="h-4 w-4 shrink-0 text-gold-soft"
+            className="h-4 w-4 shrink-0 text-[#FFE08A]"
             aria-hidden="true"
           />
 
@@ -129,7 +185,12 @@ export default function ClosingSection() {
         {/* Event and venue details */}
         <motion.p
           variants={fadeUp}
-          className="mt-7 w-full min-w-0 break-words px-1 font-body text-xs leading-relaxed text-ivory/90 sm:mt-10 sm:text-sm"
+          className="mt-7 w-full min-w-0 break-words rounded-lg px-2 py-2 font-body text-xs font-semibold leading-relaxed sm:mt-10 sm:text-sm"
+          style={{
+          color: "#FFF8E8",
+          textShadow: "none",
+          backgroundColor: "transparent",
+        }}
         >
           {bride.shortName} &amp; {groom.shortName}
           {" · "}
