@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig } from "framer-motion";
 
 import { LanguageProvider } from "@/components/LanguageContext";
@@ -51,6 +51,21 @@ export default function Home() {
     setOpened(true);
     musicRef.current?.start();
   };
+
+  // Freeze page scrolling while the opening screen is up. Scrolling is only
+  // enabled after "Open Invitation" is clicked (opened === true). The opening
+  // overlay itself can still scroll internally (it uses overflow-y-auto).
+  // The <html> element is the real scroll container here, so lock it (and body)
+  // — locking body alone still lets the document scroll.
+  useEffect(() => {
+    const value = opened ? "" : "hidden";
+    document.documentElement.style.overflow = value;
+    document.body.style.overflow = value;
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [opened]);
 
   return (
     // reducedMotion="user" makes Framer Motion honor the OS "reduce motion"
