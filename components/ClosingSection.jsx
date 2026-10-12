@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { weddingAssets } from "@/config/assets";
+import { SHOW_INVITATION_PDF } from "@/config/features";
 import { useContent } from "./LanguageContext";
 import {
   OrnamentalDivider,
@@ -162,25 +163,28 @@ export default function ClosingSection() {
           “{messages.closing}”
         </motion.p>
 
-        {/* Invitation PDF button */}
-        <motion.a
-          variants={fadeUp}
-          href={weddingAssets.invitationPdf}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="mx-auto mt-7 box-border flex w-full min-w-0 max-w-[280px] items-center justify-center gap-2 rounded-full border-2 border-[#F4D17D] bg-[#321C20]/85 px-4 py-3 font-heading text-sm font-semibold leading-snug tracking-normal text-[#FFF8E8] shadow-[0_4px_18px_rgba(0,0,0,0.4)] transition-colors hover:bg-[#4A252B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFE5A0] sm:mt-9 sm:max-w-sm sm:px-5 sm:text-base"
-        >
-          <FileText
-            className="h-4 w-4 shrink-0 text-[#FFE08A]"
-            aria-hidden="true"
-          />
+        {/* Invitation PDF button. Hidden when NEXT_PUBLIC_SHOW_INVITATION_PDF="false"
+            (see config/features.js). */}
+        {SHOW_INVITATION_PDF && (
+          <motion.a
+            variants={fadeUp}
+            href={weddingAssets.invitationPdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="mx-auto mt-7 box-border flex w-full min-w-0 max-w-[280px] items-center justify-center gap-2 rounded-full border-2 border-[#F4D17D] bg-[#321C20]/85 px-4 py-3 font-heading text-sm font-semibold leading-snug tracking-normal text-[#FFF8E8] shadow-[0_4px_18px_rgba(0,0,0,0.4)] transition-colors hover:bg-[#4A252B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFE5A0] sm:mt-9 sm:max-w-sm sm:px-5 sm:text-base"
+          >
+            <FileText
+              className="h-4 w-4 shrink-0 text-[#FFE08A]"
+              aria-hidden="true"
+            />
 
-          <span className="min-w-0 flex-1 whitespace-normal break-words text-center">
-            {ui.viewWeddingInvitationPdf}
-          </span>
-        </motion.a>
+            <span className="min-w-0 flex-1 whitespace-normal break-words text-center">
+              {ui.viewWeddingInvitationPdf}
+            </span>
+          </motion.a>
+        )}
 
         {/* Event and venue details */}
         <motion.p

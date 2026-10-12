@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Languages, FileText } from "lucide-react";
 import { weddingAssets } from "@/config/assets";
+import { SHOW_INVITATION_PDF } from "@/config/features";
 import { useContent, useLang } from "./LanguageContext";
 import FloatingPetals from "./FloatingPetals";
 import { LotusMark, OrnamentalDivider, FloralBottom, MandalaCorner } from "./Decorations";
@@ -190,18 +191,21 @@ export default function OpeningScreen({ onOpen }) {
             </motion.span>
           </motion.button>
 
-          {/* Opens the real invitation PDF in a new tab (see weddingAssets.invitationPdf) */}
-          <motion.a
-            href={weddingAssets.invitationPdf}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 rounded-full border border-gold bg-ivory/90 px-6 py-2.5 font-heading text-sm font-medium tracking-wide text-green shadow-md transition-colors hover:bg-gold/15 focus-visible:outline-none sm:px-8 sm:py-3 sm:text-lg"
-          >
-            <FileText className="h-4 w-4" aria-hidden="true" />
-            {ui.viewInvitationPdf}
-          </motion.a>
+          {/* Opens the real invitation PDF in a new tab (see weddingAssets.invitationPdf).
+              Hidden when NEXT_PUBLIC_SHOW_INVITATION_PDF="false" (see config/features.js). */}
+          {SHOW_INVITATION_PDF && (
+            <motion.a
+              href={weddingAssets.invitationPdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 rounded-full border border-gold bg-ivory/90 px-6 py-2.5 font-heading text-sm font-medium tracking-wide text-green shadow-md transition-colors hover:bg-gold/15 focus-visible:outline-none sm:px-8 sm:py-3 sm:text-lg"
+            >
+              <FileText className="h-4 w-4" aria-hidden="true" />
+              {ui.viewInvitationPdf}
+            </motion.a>
+          )}
         </motion.div>
       </motion.div>
     </motion.div>

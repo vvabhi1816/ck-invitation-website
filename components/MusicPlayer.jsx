@@ -17,11 +17,51 @@ import { LotusMark } from "./Decorations";
 // • Missing or unplayable audio is handled gracefully (shows a gentle note;
 //   nothing breaks). Replace the track at config/assets.js (weddingAssets.music).
 // =============================================================================
+// The track opens with a short lead-in; begin playback 8s in so the melody
+// starts on the musical phrase rather than the silence/intro.
+const START_AT_SECONDS = 8;
+
 function MusicPlayer(_props, ref) {
   const audioRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [missing, setMissing] = useState(false);
+
+  // Refs (not state) so the intro seek never re-runs on a React re-render.
+  // `hasStarted` guards the 8s seek to the FIRST play only — a pause/resume
+  // keeps its position instead of jumping back to 8s. `pendingSeek` defers the
+  // seek until the audio's duration is known (metadata loaded).
+  const hasStartedRef = useRef(false);
+  const pendingSeekRef = useRef(false);
+
+  // Move the playhead to the 8s intro offset — but only once the duration is
+  // known, and only if the track is actually longer than 8s (otherwise start at
+  // 0 so short/placeholder files still play).
+  const seekToIntro = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const { duration } = audio;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    const target = duration > START_AT_SECONDS ? START_AT_SECONDS : 0;
+    try {
+      audio.currentTime = target;
+    } catch {
+      // Not seekable yet — onLoadedMetadata will retry.
+    }
+  };
+
+  // Called just before the FIRST play (fresh start). If the duration is already
+  // available we seek immediately; otherwise we defer to onLoadedMetadata.
+  const primeIntroStart = () => {
+    const audio = audioRef.current;
+    if (!audio || hasStartedRef.current) return;
+    hasStartedRef.current = true;
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      seekToIntro();
+    } else {
+      pendingSeekRef.current = true;
+    }
+  };
 
   const toggle = async () => {
     const audio = audioRef.current;
@@ -31,6 +71,8 @@ function MusicPlayer(_props, ref) {
         audio.pause();
         setPlaying(false);
       } else {
+        // Seek to 8s only on the very first play; resumes keep their position.
+        primeIntroStart();
         await audio.play();
         setPlaying(true);
       }
@@ -50,6 +92,8 @@ function MusicPlayer(_props, ref) {
     const audio = audioRef.current;
     if (!audio) return;
     try {
+      // First play from the "Open Invitation" gesture — begin at the 8s offset.
+      primeIntroStart();
       await audio.play();
       setPlaying(true);
     } catch {
@@ -66,6 +110,14 @@ function MusicPlayer(_props, ref) {
         src={weddingAssets.music}
         loop
         preload="auto"
+        onLoadedMetadata={() => {
+          // Duration is now known — perform a deferred first-play seek if the
+          // play started before metadata finished loading.
+          if (pendingSeekRef.current) {
+            pendingSeekRef.current = false;
+            seekToIntro();
+          }
+        }}
         onError={() => setMissing(true)}
         onEnded={() => setPlaying(false)}
       />

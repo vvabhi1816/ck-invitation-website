@@ -6,15 +6,22 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Languages, Menu, X } from "lucide-react";
 import { useContent, useLang } from "./LanguageContext";
 
+// Navigation items. Set `hidden: true` to temporarily remove a menu item from
+// BOTH the desktop and mobile menus without deleting its section/component.
+// To restore Venue or Gallery later, simply remove their `hidden: true` flag
+// (and re-enable the matching section in app/page.js).
 const LINKS = [
   { key: "home", href: "#home" },
   { key: "invitation", href: "#invitation" },
   { key: "couple", href: "#couple" },
   { key: "countdown", href: "#countdown" },
   { key: "reception", href: "#reception" },
-  { key: "venue", href: "#venue" },
-  { key: "gallery", href: "#gallery" },
+  { key: "venue", href: "#venue", hidden: true }, // Venue hidden for now
+  { key: "gallery", href: "#gallery", hidden: true }, // Gallery hidden for now
 ];
+
+// Only the visible items are rendered in either menu layout.
+const VISIBLE_LINKS = LINKS.filter((link) => !link.hidden);
 
 export default function Navigation({ visible = true }) {
   const [open, setOpen] = useState(false);
@@ -147,7 +154,7 @@ export default function Navigation({ visible = true }) {
 
         {/* Desktop navigation */}
         <ul className="hidden items-center gap-4 lg:flex xl:gap-6">
-          {LINKS.map((link) => (
+          {VISIBLE_LINKS.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
@@ -217,7 +224,7 @@ export default function Navigation({ visible = true }) {
             className="absolute left-0 right-0 top-full z-[60] max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain border-t border-gold/30 bg-ivory shadow-lg backdrop-blur-md lg:hidden"
           >
             <ul className="mx-auto flex w-full max-w-6xl flex-col px-4 py-2 sm:px-8">
-              {LINKS.map((link) => (
+              {VISIBLE_LINKS.map((link) => (
                 <li key={link.href} className="w-full">
                   <a
                     href={link.href}
