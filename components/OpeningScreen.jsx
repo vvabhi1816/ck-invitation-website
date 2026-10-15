@@ -117,16 +117,16 @@ export default function OpeningScreen({ onOpen }) {
         </motion.div>
 
         <motion.p
-          variants={fadeUp}
-          className="font-heading text-lg leading-relaxed text-maroon sm:text-xl md:text-2xl"
+        variants={fadeUp}
+       className="opening-invitation-title font-heading text-xl leading-relaxed text-maroon sm:text-2xl md:text-3xl"
         >
           {ui.receptionInviteHeading}
         </motion.p>
 
         <motion.p
-          variants={fadeUp}
-          className="eyebrow mt-2 text-[10px] leading-relaxed text-green/80 sm:mt-3 sm:text-xs"
-        >
+  variants={fadeUp}
+  className="opening-invitation-tagline eyebrow mt-2 text-xs leading-relaxed text-green sm:mt-3 sm:text-sm md:text-base"
+>
           {ui.celebrationTagline}
         </motion.p>
 
@@ -161,11 +161,11 @@ export default function OpeningScreen({ onOpen }) {
 
         {/* Date */}
         <motion.p
-          variants={fadeUp}
-          className="mt-6 font-heading text-base tracking-[0.18em] text-brown sm:mt-7 sm:text-xl sm:tracking-[0.25em] md:text-2xl md:tracking-[0.3em]"
-        >
-          {event.dateCompact}
-        </motion.p>
+  variants={fadeUp}
+  className="opening-invitation-date mt-6 font-sans text-lg font-semibold tracking-[0.12em] text-brown sm:mt-7 sm:text-xl sm:tracking-[0.18em] md:text-2xl"
+>
+  {event.dateCompact}
+</motion.p>
 
         {/* Action buttons — Open Invitation (primary) + View Invitation PDF
             (secondary). They sit side-by-side on larger screens and stack neatly
