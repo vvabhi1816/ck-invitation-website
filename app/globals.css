@@ -5,15 +5,16 @@
 /* =========================================================================
    COLOR PALETTE — edit here to re-theme the whole site.
    ========================================================================= */
+
 :root {
   --ivory: #f8f1de;
   --ivory-deep: #f1e6c8;
   --green: #315d20;
-  --maroon: #8b2635;
-  --gold: #c99a3d;
-  --gold-soft: #e3c98a;
+  --maroon: #7d1f2d;
+  --gold: #A66B08;
+  --gold-soft: #D4B66F;
   --lotus: #c83b62;
-  --brown: #4a3028;
+  --brown: #3D281F;
 }
 
 /* =========================================================================
@@ -60,8 +61,16 @@ body {
    ========================================================================= */
 
 /* Gold gradient text used for names and key headings */
+
 .text-gold-gradient {
-  background: linear-gradient(135deg, #a9792a 0%, #c99a3d 40%, #e3c98a 55%, #c99a3d 70%, #a9792a 100%);
+  background: linear-gradient(
+    135deg,
+    #87580B 0%,
+    #A66B08 35%,
+    #C28B20 55%,
+    #A66B08 75%,
+    #87580B 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
